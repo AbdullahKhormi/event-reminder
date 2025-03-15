@@ -1,0 +1,164 @@
+@import "../../../../scss/abstracts/variables";
+@import "../../../../scss/abstracts/functions";
+@import "../../../../scss/base/fonts";
+
+footer {
+    background-color: $black-2;
+    color: $grey-3;
+    padding-top: toRem(28);
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    width: 100%;
+    .overlay {
+        position: absolute;
+        z-index: 0;
+        background-repeat: no-repeat;
+        top: 0;
+        right: -3%;
+        width: 500px;
+        height: 200px;
+    }
+    .overlay-right {
+        background-image: url(/../../../../assets/images/footer/footer_bg_right.webp);
+    }
+    .overlay-left {
+        left: 0;
+        background-image: url(/../../../../assets/images/footer/footer_bg_left.webp);
+    }
+    .container-lg {
+        position: relative;
+        z-index: 1;
+    }
+    .footer-title {
+        margin: 0;
+        font-size: toRem(18);
+        padding-bottom: toRem(31);
+        color: $white;
+        font-family: $font-b;
+    }
+    .centeral-box {
+        display: inline-block;
+    }
+    .footer-left {
+        margin-bottom: toRem(55);
+        .img-holder {
+            margin-bottom: toRem(20);
+            img {
+                width: 160px;
+                cursor: pointer;
+            }
+        }
+        p {
+            font-size: toRem(12);
+            margin-bottom: toRem(49);
+            text-transform: capitalize;
+        }
+        .social-holder {
+            display: flex;
+            align-items: center;
+            .social-label {
+                font-size: toRem(14);
+                margin-inline-end: toRem(12);
+            }
+            .social-links-holder {
+                line-height: 0;
+                margin-top: -1px;
+                a {
+                    img {
+                        width: 16px;
+                        height: 15px;
+                    }
+                }
+            }
+        }
+    }
+    .footer-center {
+        margin-bottom: toRem(55);
+        display: flex;
+        .links-holder {
+            display: flex;
+            margin: 0 auto;
+            ul {
+                margin: 0;
+                list-style: none;
+                li {
+                    margin-bottom: 1rem;
+                    cursor: pointer;
+                }
+                &:first-of-type {
+                    padding: 0;
+                }
+            }
+        }
+    }
+    .footer-right {
+        display: flex;
+        .tel-holder,
+        .email-holder {
+            display: flex;
+            margin-bottom: toRem(24);
+            align-items: center;
+            .img-holder {
+                height: 48px;
+                width: 48px;
+                border-radius: 4px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: rgba(255, 255, 255, 0.1);
+                margin-inline-end: toRem(16);
+            }
+            .tel-numbers,
+            .email-links {
+                display: flex;
+                flex-direction: column;
+                .numbers,
+                .emails {
+                    color: $white;
+                    font-size: toRem(14);
+                    display: block;
+                    text-decoration: none;
+                    line-height: 1.7;
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+    }
+    .copyrights-holder {
+        width: 90%;
+        display: flex;
+        justify-content: center;
+        margin: 0 auto;
+        border-top: 2px solid rgba(130, 130, 130, 0.2);
+        margin-top: toRem(40);
+        margin-bottom: toRem(21);
+        .copyrights {
+            margin: toRem(20) 0;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: toRem(10);
+        }
+    }
+}
+
+@media (min-width: 992px) {
+    footer {
+        padding-top: toRem(85);
+        .footer-left,
+        .footer-center {
+            margin-bottom: 0;
+        }
+        .footer-center {
+            justify-content: center;
+        }
+        .footer-right {
+            justify-content: center;
+        }
+        .copyrights-holder {
+            width: 40%;
+            margin-top: toRem(55);
+        }
+    }
+}

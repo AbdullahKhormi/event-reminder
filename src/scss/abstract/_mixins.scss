@@ -1,0 +1,6 @@
+@mixin lines($numb) {
+    display: -webkit-box;
+    -webkit-line-clamp: $numb;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
