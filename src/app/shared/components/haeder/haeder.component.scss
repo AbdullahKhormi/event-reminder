@@ -1,0 +1,34 @@
+::ng-deep{
+    .bg-body-tertiary {
+        background-color: #c3c3c3 !important;
+    }
+
+}
+
+    nav{
+        .container-fluid{
+            .navbar-brand {
+                img {
+                    width: 85px !important;
+                    height: 85px;
+                    padding: 1rem;
+                    box-sizing: content-box;
+                  }
+
+
+          }
+          .nav-item{
+            margin-inline-end: 35px;
+            align-items: center;
+            display: flex
+        ;
+        .nav-link{
+            &:hover{
+                color: #000;
+            }
+        }
+          }
+        }
+
+
+}
