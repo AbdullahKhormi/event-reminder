@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-haeder',
+  selector: 'app-header',
   standalone: true,
   imports: [RouterModule],
-  templateUrl: './haeder.component.html',
-  styleUrl: './haeder.component.scss'
+  templateUrl: './header.component.html',
+  styleUrl: './header.component.scss'
 })
-export class HaederComponent {
+export class HeaderComponent {
 
 }

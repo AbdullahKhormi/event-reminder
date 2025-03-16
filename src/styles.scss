@@ -1,15 +1,30 @@
-/* global styles.css */
-html, body {
-  height: 100%; /* يجعل الصفحة تأخذ كامل الارتفاع */
-  margin: 0; /* يزيل المسافة الافتراضية */
+@import "primeicons/primeicons.css";
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: #f3f3f3 !important;
   display: flex;
-  flex-direction: column; /* ترتيب العناصر عموديًا */
+  flex-direction: column;  }
+
+body {
+  position: relative;
+  height: 100%;
 }
 
-.container {
-  flex: 1; /* يجعل المحتوى الرئيسي يأخذ المساحة المتاحة */
+app-footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
 
-footer {
-  margin-top: auto; /* يدفع الفوتر إلى الأسفل إذا لم يكن المحتوى كافيًا */
+.content-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  min-height: 0;
+  padding: 125px;
 }
