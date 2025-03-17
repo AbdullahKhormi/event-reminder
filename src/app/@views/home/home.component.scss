@@ -1,9 +1,14 @@
-.holder-board{
+.holder-board {
+    width: 90%; /* نسبة عرض 90% من حجم العنصر الأب */
+    max-width: 1200px; /* أقصى عرض 1200px */
+    height: auto; /* الطول سيتناسب مع المحتوى */
+    min-height: 300px; /* تحديد الحد الأدنى للارتفاع */
     border-radius: 2px;
-  background-color: #fff;
-   box-shadow: 0px 0px 65px rgba(0, 0, 0, 0.2);
-   padding: 20px;
-}
+    background-color: #fff;
+    box-shadow: 0px 0px 65px rgba(0, 0, 0, 0.2);
+    margin: 0 auto; /* لتوسيط العنصر */
+    padding: 20px; /* إضافة مسافة داخلية */
+  }
 .holder-add{
     border-radius: 10px;
     background-color: #c3c3c3 !important;

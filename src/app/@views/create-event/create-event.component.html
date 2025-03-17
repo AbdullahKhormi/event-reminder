@@ -1,1 +1,47 @@
-<p>create-event works!</p>
+<div class="container-xl" >
+    <div class="row p-3">
+        <div class="col">
+           <div class="holder-board">
+            <div class="row">
+                <div class="col">
+                    <form [formGroup]="addEventForm" (ngSubmit)="addEvent()">
+                        <div class="p-field mb-3">
+                          <label for="nameEvent " class="mb-1">Event Name:</label>
+                          <input
+                            id="nameEvent"
+                            pInputText
+                            formControlName="nameEvent"
+                            [ngClass]="{'p-invalid': addEventForm.get('nameEvent')?.invalid && addEventForm.get('nameEvent')?.touched}" />
+                          <div *ngIf="addEventForm.get('nameEvent')?.touched && addEventForm.get('nameEvent')?.invalid" class="p-error">
+                            <small *ngIf="addEventForm.get('nameEvent')?.hasError('required')">Event name is required.</small>
+                          </div>
+                        </div>
+
+                        <div class="p-field mb-3">
+                          <label for="dateEvent" class="mb-1">Event Date:</label>
+                          <p-calendar formControlName="dateEvent" />
+                          <!-- <input
+  id="dateEvent"
+  type="datetime-local"
+  formControlName="dateEvent"
+  [min]="minDate"
+  [ngClass]="{'p-invalid': addEventForm.get('dateEvent')?.invalid && addEventForm.get('dateEvent')?.touched}" />
+
+                          <div *ngIf="addEventForm.get('dateEvent')?.touched && addEventForm.get('dateEvent')?.invalid" class="p-error">
+                            <small *ngIf="addEventForm.get('dateEvent')?.hasError('required')">Event date is required.</small>
+                          </div> -->
+                        </div>
+
+                      <div class="d-flex justify-content-around">
+                        <button class="btn-submit" pButton type="submit" label="Submit" [disabled]="addEventForm.invalid">Send</button>
+                        <button class="btn-reset" pButton type="reset" label="reset" [disabled]="addEventForm.invalid">reset</button>
+                      </div>
+                      </form>
+
+
+                </div>
+            </div>
+            </div>
+            </div>
+            </div>
+            </div>

@@ -1,0 +1,51 @@
+.holder-board {
+    width: 100%; /* زيادة العرض ليشمل 95% من مساحة العنصر الأب */
+    max-width: 1600px; /* زيادة الحد الأقصى لعرض العنصر ليصبح 1600px */
+    height: auto; /* الطول سيتناسب مع المحتوى */
+    min-height: 300px; /* زيادة الحد الأدنى للارتفاع */
+    border-radius: 2px;
+    box-shadow: 0px 0px 65px rgba(0, 0, 0, 0.2);
+    margin: 15px auto; /* لتوسيط العنصر */
+    padding: 30px; /* زيادة المسافة الداخلية */
+  }
+  .p-error {
+    color: red; /* تحديد اللون الأحمر للرسائل */
+    font-size: 14px; /* تحديد حجم الخط إذا لزم الأمر */
+    margin-top: 5px; /* إضافة مسافة بين الرسالة والعنصر */
+  }
+  .p-invalid {
+    border: 1px solid red !important; /* جعل الحدود حمراء عند وجود خطأ */
+  }
+  .container-xl {
+    display: flex;
+    flex-direction: column;
+    align-items: center;  /* لتوسيط المحتوى داخل الحاوية */
+    width: 100%;  /* تأكد من أن الحاوية تأخذ كامل العرض */
+  }
+  input{
+    padding-left: 12px;
+    width: 100%;
+    box-sizing: border-box;
+    border: rgba(138, 140, 141, .2509803922);
+    outline: none;
+    height: 46px;
+    background: #fafafa;
+  }
+  .btn-submit{
+    border-radius: 2px ;
+    padding: 7px 20px; margin-right: 8px;
+    background-color: #065d63;
+    color: white;
+    &:disabled{
+        background-color: gray
+    }
+  }
+  .btn-reset{
+    border-radius: 2px ;
+    padding: 7px 20px; margin-right: 8px;
+    background-color: #ae2525;
+    color: white;
+    &:disabled{
+        background-color: gray;
+    }
+  }
