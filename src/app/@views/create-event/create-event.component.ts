@@ -6,11 +6,13 @@ import { EvntesService } from '../../@core/services/evntes.service';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // <-- Import this
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-event',
   standalone: true,
-  imports: [ReactiveFormsModule , CalendarModule,    ToastModule,BrowserAnimationsModule
+  imports: [ReactiveFormsModule , CalendarModule,    ToastModule,  CommonModule,  // Keep this instead of BrowserModule
+
   ],
   providers: [MessageService],
 
@@ -21,7 +23,7 @@ export class CreateEventComponent {
   minDate: string = '';
 
   addEventForm!:FormGroup
-  constructor(private fb :FormBuilder , private ev:EvntesService,private messageService :MessageService){
+  constructor(private fb :FormBuilder , private ev:EvntesService,private messageService :MessageService ,private router:Router){
 this.addEventForm=fb.group({
   nameEvent:['',Validators.required],
   dateEvent:['',Validators.required]
@@ -67,20 +69,28 @@ this.addEventForm=fb.group({
     this.minDate = `${year}-${month}-${day}T${hours}:${minutes}`;
   }
 addEvent(){
-  this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Toast message shown successfully!' });
 
-//   if(this.addEventForm.valid){
-//     const formData = new FormData();
-//     const dateEventValue = this.addEventForm.value.dateEvent
-//     const date = new Date(dateEventValue);
-//     const isoDate = date.toISOString();
-//     console.log(isoDate)
-//     formData.append('data[nameEvent]', this.addEventForm.value.nameEvent);
-//     formData.append('data[dateEvent]', isoDate);
-// this.ev.postEvents(formData).subscribe(res=>{
-//   this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Toast message shown successfully!' });
+  if(this.addEventForm.valid){
+    const formData = new FormData();
+    const dateEventValue = this.addEventForm.value.dateEvent
+    const date = new Date(dateEventValue);
+    const isoDate = date.toISOString();
+    console.log(isoDate)
+    formData.append('data[nameEvent]', this.addEventForm.value.nameEvent);
+    formData.append('data[dateEvent]', isoDate);
+this.ev.postEvents(formData).subscribe(res=>{
+  setTimeout(() => {
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Success',
+      detail: `Event Added Successfully`,
+    });  }, 700);
+    setTimeout(() => {
+      this.router.navigate(['./home'])
+    }, 1000);
+  })
 
-// })
-//   }
+  }
 }
+
 }
