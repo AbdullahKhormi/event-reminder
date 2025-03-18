@@ -1,7 +1,14 @@
 <div class="container-xl" >
     <div class="row p-3">
+      <p-toast
+    [showTransformOptions]="'translateY(100%)'"
+    [showTransitionOptions]="'1000ms'"
+    [hideTransitionOptions]="'1000ms'"
+    [showTransformOptions]="'translateX(100%)'"
+  />
         <div class="col">
            <div class="holder-board">
+
             <div class="row">
                 <div class="col">
                     <form [formGroup]="addEventForm" (ngSubmit)="addEvent()">
@@ -19,8 +26,8 @@
 
                         <div class="p-field mb-3">
                           <label for="dateEvent" class="mb-1">Event Date:</label>
-                          <p-calendar formControlName="dateEvent" />
-                          <!-- <input
+                          <!-- <p-calendar formControlName="dateEvent" /> -->
+                   <input
   id="dateEvent"
   type="datetime-local"
   formControlName="dateEvent"
@@ -29,7 +36,7 @@
 
                           <div *ngIf="addEventForm.get('dateEvent')?.touched && addEventForm.get('dateEvent')?.invalid" class="p-error">
                             <small *ngIf="addEventForm.get('dateEvent')?.hasError('required')">Event date is required.</small>
-                          </div> -->
+                          </div>
                         </div>
 
                       <div class="d-flex justify-content-around">

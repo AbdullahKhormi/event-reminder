@@ -3,21 +3,25 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
 import { EvntesService } from '../../@core/services/evntes.service';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';  // استيراد BrowserAnimationsModule
-import { BrowserModule } from '@angular/platform-browser';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // <-- Import this
 
 @Component({
   selector: 'app-create-event',
   standalone: true,
-  imports: [ReactiveFormsModule,CommonModule , CalendarModule],
+  imports: [ReactiveFormsModule , CalendarModule,    ToastModule,BrowserAnimationsModule
+  ],
+  providers: [MessageService],
+
   templateUrl: './create-event.component.html',
-  styleUrl: './create-event.component.scss'
+  styleUrls: ['./create-event.component.scss']
 })
 export class CreateEventComponent {
   minDate: string = '';
 
   addEventForm!:FormGroup
-  constructor(private fb :FormBuilder , private ev:EvntesService){
+  constructor(private fb :FormBuilder , private ev:EvntesService,private messageService :MessageService){
 this.addEventForm=fb.group({
   nameEvent:['',Validators.required],
   dateEvent:['',Validators.required]
@@ -25,31 +29,31 @@ this.addEventForm=fb.group({
   }
   ngOnInit(): void {
     this.setMinDate();
-    this.ev.getAllEvents().subscribe(res => {
-const dateEvent = new Date(res.data[2].dateEvent);
+//     this.ev.getAllEvents().subscribe(res => {
+// const dateEvent = new Date(res.data[2].dateEvent);
 
-const localDate = new Date(dateEvent.toLocaleString());
+// const localDate = new Date(dateEvent.toLocaleString());
 
-const formattedDate = localDate.toLocaleDateString('en-US', {
-  weekday: 'long',
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric',
-});
+// const formattedDate = localDate.toLocaleDateString('en-US', {
+//   weekday: 'long',
+//   year: 'numeric',
+//   month: 'long',
+//   day: 'numeric',
+// });
 
-const formattedTime = localDate.toLocaleTimeString('en-US', {
-  hour: '2-digit',
-  minute: '2-digit',
-  hour12: true,
-});
-
-
-const result = `${formattedDate} at ${formattedTime}`;
-
-console.log(result);
+// const formattedTime = localDate.toLocaleTimeString('en-US', {
+//   hour: '2-digit',
+//   minute: '2-digit',
+//   hour12: true,
+// });
 
 
-    });
+// const result = `${formattedDate} at ${formattedTime}`;
+
+// console.log(result);
+
+
+//     });
 
   }
   setMinDate(): void {
@@ -63,18 +67,20 @@ console.log(result);
     this.minDate = `${year}-${month}-${day}T${hours}:${minutes}`;
   }
 addEvent(){
+  this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Toast message shown successfully!' });
 
-  if(this.addEventForm.valid){
-    const formData = new FormData();
-    const dateEventValue = this.addEventForm.value.dateEvent
-    const date = new Date(dateEventValue);
-    const isoDate = date.toISOString();
-    console.log(isoDate)
-    formData.append('data[nameEvent]', this.addEventForm.value.nameEvent);
-    formData.append('data[dateEvent]', isoDate);
-this.ev.postEvents(formData).subscribe(res=>{
-  console.log(res)
-})
-  }
+//   if(this.addEventForm.valid){
+//     const formData = new FormData();
+//     const dateEventValue = this.addEventForm.value.dateEvent
+//     const date = new Date(dateEventValue);
+//     const isoDate = date.toISOString();
+//     console.log(isoDate)
+//     formData.append('data[nameEvent]', this.addEventForm.value.nameEvent);
+//     formData.append('data[dateEvent]', isoDate);
+// this.ev.postEvents(formData).subscribe(res=>{
+//   this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Toast message shown successfully!' });
+
+// })
+//   }
 }
 }
