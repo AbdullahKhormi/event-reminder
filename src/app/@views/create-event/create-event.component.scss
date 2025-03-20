@@ -36,11 +36,14 @@
     padding: 7px 20px; margin-right: 8px;
     background-color: #065d63;
     color: white;
+    border: none;
     &:disabled{
         background-color: gray
     }
   }
   .btn-reset{
+    border: none;
+
     border-radius: 2px ;
     padding: 7px 20px; margin-right: 8px;
     background-color: #ae2525;

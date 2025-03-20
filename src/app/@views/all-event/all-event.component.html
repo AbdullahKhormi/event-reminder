@@ -1,1 +1,40 @@
-<p>all-event works!</p>
+<div class="container-xl">
+    <div class="row p-3">
+        <p-toast
+    [showTransformOptions]="'translateY(100%)'"
+    [showTransitionOptions]="'1000ms'"
+    [hideTransitionOptions]="'1000ms'"
+    [showTransformOptions]="'translateX(100%)'"
+  />
+      <div class="col">
+        <h6>total={{ totalRecords }}</h6>
+        <p-table [value]="events" [totalRecords]="totalRecords" [rows]="rows" (onPage)="paginate($event)" [tableStyle]="{ 'min-width': '60rem' }" [responsive]="true">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Name Event</th>
+              <th>Time Event</th>
+              <th>Actions</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-event>
+            <tr>
+              <td>{{ event.nameEvent }}</td>
+              <td>{{ event.dateEvent | date: 'yyyy-MM-dd HH:mm:ss' }}</td>
+              <td>
+              <div>
+                <button class="icon-actions" (click)="delete(event.id)"><i class="pi pi-trash" style="color: red"></i>
+                </button>
+                <button class="icon-actions" (click)="sendEmail()"><i class="pi pi-bell "></i>
+                </button>
+                <button class="icon-actions" (click)="delete(event.id)"><i class="pi pi-trash" style="color: red"></i>
+                </button>
+              </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+        <p-paginator [rows]="rows" [totalRecords]="totalRecords" (onPageChange)="paginate($event)"             [showFirstLastIcon]="false"
+        ></p-paginator>
+      </div>
+    </div>
+  </div>

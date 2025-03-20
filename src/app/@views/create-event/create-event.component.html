@@ -32,7 +32,9 @@
   type="datetime-local"
   formControlName="dateEvent"
   [min]="minDate"
-  [ngClass]="{'p-invalid': addEventForm.get('dateEvent')?.invalid && addEventForm.get('dateEvent')?.touched}" />
+  [ngClass]="{'p-invalid': addEventForm.get('dateEvent')?.invalid && addEventForm.get('dateEvent')?.touched}"
+  (change)="onDateChange()"
+  (click)="onInputClick()"/>
 
                           <div *ngIf="addEventForm.get('dateEvent')?.touched && addEventForm.get('dateEvent')?.invalid" class="p-error">
                             <small *ngIf="addEventForm.get('dateEvent')?.hasError('required')">Event date is required.</small>

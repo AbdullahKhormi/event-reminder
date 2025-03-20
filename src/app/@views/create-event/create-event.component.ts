@@ -84,13 +84,31 @@ this.ev.postEvents(formData).subscribe(res=>{
       severity: 'success',
       summary: 'Success',
       detail: `Event Added Successfully`,
-    });  }, 700);
+    });  }, 2200);
     setTimeout(() => {
       this.router.navigate(['./home'])
-    }, 1000);
-  })
+    }, 3500);
+  },(error) => {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: `Event Added Unsuccessfully`,
+    });
+  }
+
+)
 
   }
+}
+onDateChange(){
+  const dateInput = document.getElementById('dateEvent') as HTMLInputElement;
+  dateInput.blur();
+}
+onInputClick() {
+  const dateInput = document.getElementById('dateEvent') as HTMLInputElement;
+
+  // محاكاة التركيز على الحقل لفتح التقويم
+  dateInput.focus();  // يمكنك تنفيذ أي منطق آخر هنا إذا أردت.
 }
 
 }
