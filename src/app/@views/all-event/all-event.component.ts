@@ -30,7 +30,7 @@ export class AllEventComponent implements OnInit {
 
   loadEvents() {
     const page = Math.floor(this.first / this.rows) + 1;
-    this.getData.getAllEvents(page, this.rows).subscribe((res) => {
+    this.getData.getProtectedData(page, this.rows).subscribe((res) => {
       this.events = res.data;
       this.totalRecords = res.meta.pagination.total;
     });
@@ -42,6 +42,7 @@ export class AllEventComponent implements OnInit {
     this.loadEvents();
   }
   delete(event:Event){
+    console.log(event)
     this.http.delete<any>(`${this.url}/${event}`).subscribe(
       (data) => {
 
@@ -49,21 +50,33 @@ export class AllEventComponent implements OnInit {
            }
 
           , (error) => {
-            if(error.error.error.status==500){
-              setTimeout(() => {
-                this.messageService.add({
-                  severity: 'success',
-                  summary: 'Success',
-                  detail: `Event Deleted Successfully`,
-                });  }, 2200);
-              setTimeout(() => {
-                this.loadEvents()
 
-                 }, 3200);
-            }
           })
 
   }
+  deleteEvent(eventId: number): void {
+    this.getData.deleteData(eventId).subscribe(
+      (response) => {
+      },
+      (error) => {
+         console.log(error.response.status)
+        if ( error.response.status === 500) {
+          setTimeout(() => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: `Event Deleted Successfully`,
+            });
+          }, 2200);
+
+          setTimeout(() => {
+            this.loadEvents();
+          }, 3200);
+        }
+      }
+    );
+  }
+
   send(event:any){
 
 

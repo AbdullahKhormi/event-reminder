@@ -78,7 +78,7 @@ addEvent(){
     console.log(isoDate)
     formData.append('data[nameEvent]', this.addEventForm.value.nameEvent);
     formData.append('data[dateEvent]', isoDate);
-this.ev.postEvents(formData).subscribe(res=>{
+this.ev.postData(formData).subscribe(res=>{
   setTimeout(() => {
     this.messageService.add({
       severity: 'success',
@@ -86,7 +86,7 @@ this.ev.postEvents(formData).subscribe(res=>{
       detail: `Event Added Successfully`,
     });  }, 2200);
     setTimeout(() => {
-      this.router.navigate(['./home'])
+      this.router.navigate(['./all-events'])
     }, 3500);
   },(error) => {
     this.messageService.add({

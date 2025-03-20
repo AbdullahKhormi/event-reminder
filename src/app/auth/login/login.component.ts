@@ -62,12 +62,12 @@ sendForm() {
       (response: any) => {
         localStorage.setItem('jwt', response.jwt);
 
-        this.evS.getProtectedData().subscribe(
-          (data) => {
-          },
-          (error) => {
-          }
-        );
+        // this.evS.getProtectedData().subscribe(
+        //   (data) => {
+        //   },
+        //   (error) => {
+        //   }
+        // );
 
         const decodedToken = this.evS.getDecodedToken();
 
