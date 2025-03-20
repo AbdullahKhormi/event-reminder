@@ -6,6 +6,7 @@ import { AllEventComponent } from './@views/all-event/all-event.component';
 import { LoginComponent } from './auth/login/login.component';
 import { NewAccountComponent } from './auth/new-account/new-account.component';
 import { AuthGuard } from './@core/guards/auth.guard';
+import { EditEventComponent } from './@views/edit-event/edit-event.component';
 
 export const routes: Routes = [
   {
@@ -38,6 +39,12 @@ export const routes: Routes = [
       {
         path: 'all-events',
         component: AllEventComponent,
+        canActivate:[AuthGuard]
+
+      },
+      {
+        path: 'edit-events/:id',
+        component: EditEventComponent,
         canActivate:[AuthGuard]
 
       },

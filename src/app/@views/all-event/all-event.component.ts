@@ -7,10 +7,11 @@ import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { HttpClient } from '@angular/common/http';
 import emailjs, { type EmailJSResponseStatus } from '@emailjs/browser';
+import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-all-event',
   standalone: true,
-  imports: [TableModule, DatePipe, PaginatorModule,ToastModule],
+  imports: [TableModule, DatePipe, PaginatorModule,ToastModule,RouterModule],
   providers: [DatePipe,MessageService],
   templateUrl: './all-event.component.html',
   styleUrls: ['./all-event.component.scss']

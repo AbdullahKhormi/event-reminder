@@ -123,6 +123,21 @@ deletevents(id: any) : Observable<any>{
       });
     });
   }
-
+  getEventById(eventId: number): Observable<any> {
+    return new Observable((observer) => {
+      axios.get(`${this.apiUrl}/events/${eventId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('jwt')}`
+        }
+      })
+        .then(response => {
+          observer.next(response.data); // إرسال البيانات المسترجعة
+          observer.complete();
+        })
+        .catch(error => {
+          observer.error(error); // في حال حدوث خطأ
+        });
+    });
+  }
 
 }
