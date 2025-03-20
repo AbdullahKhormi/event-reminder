@@ -1,1 +1,54 @@
-<p>login works!</p>
+<div class="container-fluid d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <p-toast
+    [showTransformOptions]="'translateY(100%)'"
+    [showTransitionOptions]="'1000ms'"
+    [hideTransitionOptions]="'1000ms'"
+    [showTransformOptions]="'translateX(100%)'"
+  />
+    <div class="col-md-4">
+        <div class="img-logo mb-3 d-flex justify-content-center" >
+            <img src="../../../assets/common/logo.jpeg" width="25%">
+        </div>
+      <form [formGroup]="loginForm" (ngSubmit)="sendForm()">
+        <div class="form-holder">
+          <!-- Email Field -->
+          <div class="mb-3">
+            <input
+              type="email"
+              formControlName="email"
+              class="form-control"
+              placeholder="Email"
+              required>
+            <div *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid" class="text-danger">
+              <div *ngIf="loginForm.get('email')?.hasError('required')">Email is required.</div>
+              <div *ngIf="loginForm.get('email')?.hasError('email')">Invalid email format.</div>
+            </div>
+          </div>
+
+          <!-- Password Field -->
+          <div class="mb-3">
+            <input
+              type="password"
+              formControlName="password"
+              class="form-control"
+              placeholder="Password"
+              required>
+            <div *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid" class="text-danger">
+              <div *ngIf="loginForm.get('password')?.hasError('required')">Password is required.</div>
+            </div>
+          </div>
+
+          <!-- Buttons -->
+          <div class="gap-2 d-flex">
+            <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid">Send</button>
+            <button type="button" class="btn btn-secondary" (click)="loginForm.reset()">Reset</button>
+          </div>
+
+          <!-- New Account Link -->
+          <div class="mb-3">
+            <a [routerLink]="'/registeration'">New account</a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>

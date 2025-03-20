@@ -6,7 +6,6 @@ import { PaginatorModule } from 'primeng/paginator';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { HttpClient } from '@angular/common/http';
-import { EmailService } from '../../@core/services/email.service';
 import emailjs, { type EmailJSResponseStatus } from '@emailjs/browser';
 @Component({
   selector: 'app-all-event',
@@ -23,7 +22,7 @@ export class AllEventComponent implements OnInit {
   rows: number = 10;
   private url = 'http://localhost:1337/api/events';
 
-  constructor(private getData: EvntesService,private messageService:MessageService,private http :HttpClient,private emailService: EmailService) {}
+  constructor(private getData: EvntesService,private messageService:MessageService,private http :HttpClient) {}
 
   ngOnInit() {
     this.loadEvents();
@@ -73,26 +72,5 @@ export class AllEventComponent implements OnInit {
     });
 
   }
-  sendEmail() {
-    const email = 'abady112009@gmail.com'; // البريد الإلكتروني
-    const subject = 'Event Notification'; // الموضوع
-    const message = 'Hello, this is a notification about your event.'; // المحتوى
 
-    this.emailService.sendEmail(email, subject, message).subscribe(
-      (response) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: 'Email sent successfully!',
-        });
-      },
-      (error) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Failed to send email.',
-        });
-      }
-    );
-  }
 }
