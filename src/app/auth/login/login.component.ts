@@ -35,7 +35,6 @@ ngOnInit(){
 
   this.authService.sendObject.subscribe(res=>{
     this.receiveObj=res
-    console.log(this.receiveObj)
   })
   this.getDecodedToken()
 }

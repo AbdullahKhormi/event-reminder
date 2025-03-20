@@ -52,7 +52,6 @@ this.addEventForm=fb.group({
 
 // const result = `${formattedDate} at ${formattedTime}`;
 
-// console.log(result);
 
 
 //     });
@@ -75,7 +74,6 @@ addEvent(){
     const dateEventValue = this.addEventForm.value.dateEvent
     const date = new Date(dateEventValue);
     const isoDate = date.toISOString();
-    console.log(isoDate)
     formData.append('data[nameEvent]', this.addEventForm.value.nameEvent);
     formData.append('data[dateEvent]', isoDate);
 this.ev.postData(formData).subscribe(res=>{

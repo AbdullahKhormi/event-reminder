@@ -42,7 +42,6 @@ export class AllEventComponent implements OnInit {
     this.loadEvents();
   }
   delete(event:Event){
-    console.log(event)
     this.http.delete<any>(`${this.url}/${event}`).subscribe(
       (data) => {
 
@@ -59,7 +58,6 @@ export class AllEventComponent implements OnInit {
       (response) => {
       },
       (error) => {
-         console.log(error.response.status)
         if ( error.response.status === 500) {
           setTimeout(() => {
             this.messageService.add({
