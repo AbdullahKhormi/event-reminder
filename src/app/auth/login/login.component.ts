@@ -80,7 +80,7 @@ sendForm() {
         },1000);
         setTimeout(()=>{
           this.route.navigate(['home']);
-        },5000);
+        },3000);
       },
       (error) => {
 
