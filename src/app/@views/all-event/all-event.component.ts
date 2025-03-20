@@ -7,7 +7,7 @@ import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { HttpClient } from '@angular/common/http';
 import { EmailService } from '../../@core/services/email.service';
-
+import emailjs, { type EmailJSResponseStatus } from '@emailjs/browser';
 @Component({
   selector: 'app-all-event',
   standalone: true,
@@ -63,6 +63,14 @@ export class AllEventComponent implements OnInit {
                  }, 3200);
             }
           })
+
+  }
+  send(){
+    emailjs.init('AG9bmRQp2QgOY-_Cd')
+    emailjs.send("service_mmfdc5h","template_5t4yvq4",{
+      email:'akhormi.1@outlook.com',
+      message:'test',title:'Ak'
+    });
 
   }
   sendEmail() {

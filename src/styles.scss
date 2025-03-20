@@ -3,27 +3,27 @@ html,
 body {
   margin: 0;
   padding: 0;
-  height: 100%;
+  // height: 100%;
   background-color: #f3f3f3 !important;
   display: flex;
   flex-direction: column;  }
 
-body {
-  position: relative;
-  height: 100%;
-}
+// body {
+//   position: relative;
+//   height: 100%;
+// }
 
-app-footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-}
+// app-footer {
+//   position: absolute;
+//   bottom: 0;
+//   width: 100%;
+// }
 
-.content-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  flex-grow: 1;
-  min-height: 0;
-}
+// .content-container {
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   align-items: center;
+//   flex-grow: 1;
+//   min-height: 0;
+// }
