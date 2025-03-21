@@ -42,17 +42,19 @@ export class AllEventComponent implements OnInit {
     this.rows = event.rows;
     this.loadEvents();
   }
-  delete(event:Event){
-    this.http.delete<any>(`${this.url}/${event}`).subscribe(
+  delete(postId:any){
+    this.http.delete<any>(`${this.url}/${postId}`).subscribe(
       (data) => {
+        alert("data")
 
 
            }
 
           , (error) => {
-
+            if(error.error.error.status==500){
+            // this.getData()
+            }
           })
-
   }
   deleteEvent(eventId: number): void {
     this.getData.deleteData(eventId).subscribe(
