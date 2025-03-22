@@ -11,7 +11,11 @@ import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-all-event',
   standalone: true,
+<<<<<<< HEAD
   imports: [TableModule, DatePipe, PaginatorModule,ToastModule,RouterModule,CommonModule],
+=======
+  imports: [TableModule, DatePipe, PaginatorModule,ToastModule,RouterModule],
+>>>>>>> 3ea2147841b91a5693542190d00aad685aab3ae2
   providers: [DatePipe,MessageService],
   templateUrl: './all-event.component.html',
   styleUrls: ['./all-event.component.scss']

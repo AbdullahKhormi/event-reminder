@@ -1,10 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { EvntesService } from '../../@core/services/evntes.service';
+import { CommonModule, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule,CommonModule],
+  providers:[DatePipe],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -12,11 +15,34 @@ export class HomeComponent  implements OnInit, OnDestroy{
   eventTime: Date = new Date('2025-03-25T18:00:00');  // Event date and time
   remainingTime: string = '';
   timer: any;
+  isShow=false
+  events:any[]=[]
+  closestEvent: any;
 
+  constructor(private ev :EvntesService){}
   ngOnInit() {
     // this.startCountdown();
-  }
 
+    this.getClosestEvent()
+  }
+  getClosestEvent() {
+    this.ev.getData().subscribe((res:any)=>{
+      this.events=res.data
+      const currentDate = new Date();
+
+      // Sort events by dateEvent (ascending)
+      this.events.sort((a, b) => new Date(a.dateEvent).getTime() - new Date(b.dateEvent).getTime());
+
+      // Find the closest event that is in the future
+      for (let event of this.events) {
+        if (new Date(event.dateEvent).getTime() > currentDate.getTime()) {
+          this.closestEvent = event;
+          break;
+        }
+      }          })
+
+
+  }
   ngOnDestroy() {
     if (this.timer) {
       clearInterval(this.timer);  // Clean up the timer when the component is destroyed
