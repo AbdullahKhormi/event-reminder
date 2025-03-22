@@ -1,26 +1,26 @@
 .holder-board {
-    width: 100%; /* زيادة العرض ليشمل 95% من مساحة العنصر الأب */
-    max-width: 1600px; /* زيادة الحد الأقصى لعرض العنصر ليصبح 1600px */
-    height: auto; /* الطول سيتناسب مع المحتوى */
-    min-height: 300px; /* زيادة الحد الأدنى للارتفاع */
+    width: 100%;
+    max-width: 1600px;
+    height: auto;
+    min-height: 300px;
     border-radius: 2px;
     box-shadow: 0px 0px 65px rgba(0, 0, 0, 0.2);
-    margin: 15px auto; /* لتوسيط العنصر */
-    padding: 30px; /* زيادة المسافة الداخلية */
+    margin: 15px auto;
+    padding: 30px;
   }
   .p-error {
-    color: red; /* تحديد اللون الأحمر للرسائل */
-    font-size: 14px; /* تحديد حجم الخط إذا لزم الأمر */
-    margin-top: 5px; /* إضافة مسافة بين الرسالة والعنصر */
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
   }
   .p-invalid {
-    border: 1px solid red !important; /* جعل الحدود حمراء عند وجود خطأ */
+    border: 1px solid red !important;
   }
   .container-xl {
     display: flex;
     flex-direction: column;
-    align-items: center;  /* لتوسيط المحتوى داخل الحاوية */
-    width: 100%;  /* تأكد من أن الحاوية تأخذ كامل العرض */
+    align-items: center;
+    width: 100%;
   }
   input{
     padding-left: 12px;

@@ -21,16 +21,16 @@ export class EvntesService {
     return new Observable((observer) => {
       axios.get(`${this.apiUrl}/events/${eventId}`, {
         headers: {
-          Authorization: `Bearer ${token}`  // إرسال الـ JWT في الهيدر
+          Authorization: `Bearer ${token}`
         }
       })
       .then(response => {
         console.log(response)
-        observer.next(response.data); // إرسال البيانات المسترجعة
+        observer.next(response.data);
         observer.complete();
       })
       .catch(error => {
-        observer.error(error); // في حال حدوث خطأ
+        observer.error(error);
       });
     });
   }
@@ -40,16 +40,15 @@ export class EvntesService {
     if (!token) {
       throw new Error('Token is missing');
     }
-    const userId = this.getUserId(); // استخراج الـ userId من الـ token
-
+    const userId = this.getUserId();
     return new Observable((observer) => {
-      const start = (page - 1) * pageSize; // حساب الـ start بناءً على الصفحة
+      const start = (page - 1) * pageSize;
 
       axios.get(`${this.apiUrl}/events?pagination[start]=${start}&pagination[limit]=${pageSize}&sort=nameEvent:desc`, {
         headers: {
           Authorization: `Bearer ${token}`
         },params: {
-          userId: userId // إضافة userId كـ parameter إذا لزم الأمر
+          userId: userId
         }
       })
         .then(response => {
@@ -66,7 +65,7 @@ export class EvntesService {
     if (!token) {
       throw new Error('Token is missing');
     }
-    const userId = this.getUserId(); // استخراج الـ userId من الـ token
+    const userId = this.getUserId();
 
     return new Observable((observer) => {
 
@@ -74,7 +73,7 @@ export class EvntesService {
         headers: {
           Authorization: `Bearer ${token}`
         },params: {
-          userId: userId // إضافة userId كـ parameter إذا لزم الأمر
+          userId: userId
         }
       })
         .then(response => {
@@ -170,18 +169,17 @@ export class EvntesService {
         }
       })
         .then(response => {
-          observer.next(response.data); // إرسال البيانات المسترجعة
+          observer.next(response.data);
           observer.complete();
         })
         .catch(error => {
-          observer.error(error); // في حال حدوث خطأ
+          observer.error(error);
         });
     });
   }
   getUserId(): number | null {
     const decodedToken = this.getDecodedToken();
     console.log(decodedToken)
-     // استخدم الدالة السابقة لفك تشفير التوكن
-    return decodedToken ? decodedToken.id : null;  // إذا كان التوكن يحتوي على id في الـ payload، قم بإرجاعه
+    return decodedToken ? decodedToken.id : null;
   }
 }

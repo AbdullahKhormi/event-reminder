@@ -105,8 +105,7 @@ onDateChange(){
 onInputClick() {
   const dateInput = document.getElementById('dateEvent') as HTMLInputElement;
 
-  // محاكاة التركيز على الحقل لفتح التقويم
-  dateInput.focus();  // يمكنك تنفيذ أي منطق آخر هنا إذا أردت.
+  dateInput.focus();
 }
 
 }

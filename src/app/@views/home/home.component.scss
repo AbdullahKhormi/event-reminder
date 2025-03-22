@@ -1,13 +1,13 @@
 .holder-board {
-    width: 90%; /* نسبة عرض 90% من حجم العنصر الأب */
-    max-width: 1200px; /* أقصى عرض 1200px */
-    height: auto; /* الطول سيتناسب مع المحتوى */
-    min-height: 300px; /* تحديد الحد الأدنى للارتفاع */
+    width: 90%;
+    max-width: 1200px;
+    height: auto;
+    min-height: 300px;
     border-radius: 2px;
     background-color: #fff;
     box-shadow: 0px 0px 65px rgba(0, 0, 0, 0.2);
-    margin: 0 auto; /* لتوسيط العنصر */
-    padding: 20px; /* إضافة مسافة داخلية */
+    margin: 0 auto;
+    padding: 20px;
   }
 .holder-add{
     // border-radius: 10px;
@@ -34,6 +34,6 @@
 .container-xl {
     display: flex;
     flex-direction: column;
-    align-items: center;  /* لتوسيط المحتوى داخل الحاوية */
-    width: 100%;  /* تأكد من أن الحاوية تأخذ كامل العرض */
+    align-items: center;
+    width: 100%;
   }
