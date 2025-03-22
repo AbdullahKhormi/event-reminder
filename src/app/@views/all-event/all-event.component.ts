@@ -27,15 +27,20 @@ export class AllEventComponent implements OnInit {
   loading: boolean = true;
 
   constructor(private getData: EvntesService,private messageService:MessageService,private http :HttpClient,private router: Router, private googleAnalyticsService: GoogleAnalyticsService) {
-    this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
-      .subscribe((event: NavigationEnd) => {
-        this.googleAnalyticsService.sendPageView(event.urlAfterRedirects, event.url);
-      });
-  }
+
+}
 
   ngOnInit() {
     this.loadEvents();
+    this.router.events
+    .pipe(
+      filter((event) => event instanceof NavigationEnd)
+    )
+    .subscribe((event: any) => {
+      // Access urlAfterRedirects from NavigationEnd event
+      this.googleAnalyticsService.sendPageView(event.urlAfterRedirects, event.urlAfterRedirects);
+    });
+
   }
 
   loadEvents() {

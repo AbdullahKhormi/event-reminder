@@ -22,17 +22,22 @@ export class HomeComponent  implements OnInit, OnDestroy{
   closestEvent: any;
 
   constructor(private ev :EvntesService,private router: Router, private googleAnalyticsService: GoogleAnalyticsService){
-    this.router.events
-    .pipe(filter((event) => event instanceof NavigationEnd))
-    .subscribe((event: NavigationEnd) => {
-      this.googleAnalyticsService.sendPageView(event.urlAfterRedirects, event.url);
-    });
+
   }
   ngOnInit() {
     // this.startCountdown();
 
     this.getClosestEvent()
-  }
+
+    this.router.events
+    .pipe(
+      filter((event) => event instanceof NavigationEnd)
+    )
+    .subscribe((event: any) => {
+      // Access urlAfterRedirects from NavigationEnd event
+      this.googleAnalyticsService.sendPageView(event.urlAfterRedirects, event.urlAfterRedirects);
+    });
+}
   getClosestEvent() {
     this.ev.getData().subscribe((res:any)=>{
       this.events=res.data

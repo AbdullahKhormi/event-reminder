@@ -30,12 +30,8 @@ this.addEventForm=fb.group({
   nameEvent:['',Validators.required],
   dateEvent:['',Validators.required]
 })
-this.router.events
-.pipe(filter((event) => event instanceof NavigationEnd))
-.subscribe((event: NavigationEnd) => {
-  this.googleAnalyticsService.sendPageView(event.urlAfterRedirects, event.url);
-});
-  }
+
+}
   ngOnInit(): void {
     this.setMinDate();
 //     this.ev.getAllEvents().subscribe(res => {
@@ -62,6 +58,14 @@ this.router.events
 
 
 //     });
+this.router.events
+.pipe(
+  filter((event) => event instanceof NavigationEnd)
+)
+.subscribe((event: any) => {
+  // Access urlAfterRedirects from NavigationEnd event
+  this.googleAnalyticsService.sendPageView(event.urlAfterRedirects, event.urlAfterRedirects);
+});
 
   }
   setMinDate(): void {

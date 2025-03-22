@@ -28,11 +28,7 @@ this.loginForm=fb.group({
   email: ['', [Validators.required, Validators.email]],
    password:['',Validators.required]
 })
-this.route.events
-.pipe(filter((event) => event instanceof NavigationEnd))
-.subscribe((event: NavigationEnd) => {
-  this.googleAnalyticsService.sendPageView(event.urlAfterRedirects, event.url);
-});
+
 }
 getUsers(): Observable<any> {
   return this.http.get(`http://localhost:1337/users`);
@@ -43,6 +39,15 @@ ngOnInit(){
     this.receiveObj=res
   })
   this.getDecodedToken()
+  this.route.events
+  .pipe(
+    filter((event) => event instanceof NavigationEnd)
+  )
+  .subscribe((event: any) => {
+    // Access urlAfterRedirects from NavigationEnd event
+    this.googleAnalyticsService.sendPageView(event.urlAfterRedirects, event.urlAfterRedirects);
+  });
+
 }
 getDecodedToken() {
   const token = localStorage.getItem('jwt');

@@ -32,12 +32,8 @@ export class EditEventComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router, private googleAnalyticsService: GoogleAnalyticsService
   ) {
-    this.router.events
-          .pipe(filter((event) => event instanceof NavigationEnd))
-          .subscribe((event: NavigationEnd) => {
-            this.googleAnalyticsService.sendPageView(event.urlAfterRedirects, event.url);
-          });
-   }
+
+  }
 
   ngOnInit(): void {
     this.minDate = new Date().toISOString().split('T')[0];
@@ -51,8 +47,15 @@ export class EditEventComponent implements OnInit {
       nameEvent: ['', Validators.required],
       dateEvent: ['', Validators.required],
     });
-
-  }
+    this.router.events
+    .pipe(
+      filter((event) => event instanceof NavigationEnd)
+    )
+    .subscribe((event: any) => {
+      // Access urlAfterRedirects from NavigationEnd event
+      this.googleAnalyticsService.sendPageView(event.urlAfterRedirects, event.urlAfterRedirects);
+    });
+}
   loadEventData(): void {
     this.eventService.getEventById(this.eventId).subscribe(
       (res) => {

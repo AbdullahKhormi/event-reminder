@@ -21,14 +21,20 @@ export class NewAccountComponent {
     email: ['', [Validators.required, Validators.email]],
      password:['',Validators.required]
   })
-  this.route.events
-  .pipe(filter((event) => event instanceof NavigationEnd))
-  .subscribe((event: NavigationEnd) => {
-    this.googleAnalyticsService.sendPageView(event.urlAfterRedirects, event.url);
-  });
+
+
   }
   ngOnInit(){
-  }
+    this.route.events
+    .pipe(
+      filter((event) => event instanceof NavigationEnd)
+    )
+    .subscribe((event: any) => {
+      // Access urlAfterRedirects from NavigationEnd event
+      this.googleAnalyticsService.sendPageView(event.urlAfterRedirects, event.urlAfterRedirects);
+    });
+}
+
   sendForm(){
 
     if(this.registerForm.valid){
