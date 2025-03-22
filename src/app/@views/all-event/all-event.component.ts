@@ -1,16 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { EvntesService } from '../../@core/services/evntes.service';
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { PaginatorModule } from 'primeng/paginator';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { HttpClient } from '@angular/common/http';
 import emailjs, { type EmailJSResponseStatus } from '@emailjs/browser';
+import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-all-event',
   standalone: true,
-  imports: [TableModule, DatePipe, PaginatorModule,ToastModule],
+  imports: [TableModule, DatePipe, PaginatorModule,ToastModule,RouterModule,CommonModule],
   providers: [DatePipe,MessageService],
   templateUrl: './all-event.component.html',
   styleUrls: ['./all-event.component.scss']
@@ -21,6 +22,7 @@ export class AllEventComponent implements OnInit {
   first: number = 0;
   rows: number = 10;
   private url = 'http://localhost:1337/api/events';
+  loading: boolean = true;
 
   constructor(private getData: EvntesService,private messageService:MessageService,private http :HttpClient) {}
 
@@ -29,10 +31,12 @@ export class AllEventComponent implements OnInit {
   }
 
   loadEvents() {
+    this.loading = true;
     const page = Math.floor(this.first / this.rows) + 1;
     this.getData.getProtectedData(page, this.rows).subscribe((res) => {
       this.events = res.data;
       this.totalRecords = res.meta.pagination.total;
+      this.loading = false;
     });
   }
 
@@ -41,17 +45,19 @@ export class AllEventComponent implements OnInit {
     this.rows = event.rows;
     this.loadEvents();
   }
-  delete(event:Event){
-    this.http.delete<any>(`${this.url}/${event}`).subscribe(
+  delete(postId:any){
+    this.http.delete<any>(`${this.url}/${postId}`).subscribe(
       (data) => {
+        alert("data")
 
 
            }
 
           , (error) => {
-
+            if(error.error.error.status==500){
+            // this.getData()
+            }
           })
-
   }
   deleteEvent(eventId: number): void {
     this.getData.deleteData(eventId).subscribe(

@@ -1,3 +1,14 @@
 .holder{
-    background-color: #c3c3c3 !important;
 }
+footer {
+    background-color: #c3c3c3 !important;
+
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+    height: 80px;
+       z-index: 1000;
+  }
