@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { EvntesService } from '../../@core/services/evntes.service';
 import { CommonModule } from '@angular/common';
 import { ToastModule } from 'primeng/toast';
 import { CalendarModule } from 'primeng/calendar';
+import { GoogleAnalyticsService } from '../../@core/services/google-analytics.service';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-edit-event',
@@ -28,8 +30,14 @@ export class EditEventComponent implements OnInit {
     private messageService: MessageService,
     private eventService: EvntesService,
     private route: ActivatedRoute,
-    private router: Router
-  ) { }
+    private router: Router, private googleAnalyticsService: GoogleAnalyticsService
+  ) {
+    this.router.events
+          .pipe(filter((event) => event instanceof NavigationEnd))
+          .subscribe((event: NavigationEnd) => {
+            this.googleAnalyticsService.sendPageView(event.urlAfterRedirects, event.url);
+          });
+   }
 
   ngOnInit(): void {
     this.minDate = new Date().toISOString().split('T')[0];

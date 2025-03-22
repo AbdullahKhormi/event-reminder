@@ -6,7 +6,9 @@ import { EvntesService } from '../../@core/services/evntes.service';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // <-- Import this
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
+import { GoogleAnalyticsService } from '../../@core/services/google-analytics.service';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-create-event',
@@ -23,11 +25,16 @@ export class CreateEventComponent {
   minDate: string = '';
 
   addEventForm!:FormGroup
-  constructor(private fb :FormBuilder , private ev:EvntesService,private messageService :MessageService ,private router:Router){
+  constructor(private fb :FormBuilder , private ev:EvntesService,private messageService :MessageService ,private router:Router,private googleAnalyticsService: GoogleAnalyticsService){
 this.addEventForm=fb.group({
   nameEvent:['',Validators.required],
   dateEvent:['',Validators.required]
 })
+this.router.events
+.pipe(filter((event) => event instanceof NavigationEnd))
+.subscribe((event: NavigationEnd) => {
+  this.googleAnalyticsService.sendPageView(event.urlAfterRedirects, event.url);
+});
   }
   ngOnInit(): void {
     this.setMinDate();

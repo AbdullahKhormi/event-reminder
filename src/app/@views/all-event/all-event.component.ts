@@ -7,7 +7,9 @@ import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { HttpClient } from '@angular/common/http';
 import emailjs, { type EmailJSResponseStatus } from '@emailjs/browser';
-import { RouterModule } from '@angular/router';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
+import { GoogleAnalyticsService } from '../../@core/services/google-analytics.service';
+import { filter } from 'rxjs';
 @Component({
   selector: 'app-all-event',
   standalone: true,
@@ -24,7 +26,13 @@ export class AllEventComponent implements OnInit {
   private url = 'http://localhost:1337/api/events';
   loading: boolean = true;
 
-  constructor(private getData: EvntesService,private messageService:MessageService,private http :HttpClient) {}
+  constructor(private getData: EvntesService,private messageService:MessageService,private http :HttpClient,private router: Router, private googleAnalyticsService: GoogleAnalyticsService) {
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        this.googleAnalyticsService.sendPageView(event.urlAfterRedirects, event.url);
+      });
+  }
 
   ngOnInit() {
     this.loadEvents();

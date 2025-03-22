@@ -1,7 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { EvntesService } from '../../@core/services/evntes.service';
 import { CommonModule, DatePipe } from '@angular/common';
+import { filter } from 'rxjs';
+import { GoogleAnalyticsService } from '../../@core/services/google-analytics.service';
 
 @Component({
   selector: 'app-home',
@@ -19,7 +21,13 @@ export class HomeComponent  implements OnInit, OnDestroy{
   events:any[]=[]
   closestEvent: any;
 
-  constructor(private ev :EvntesService){}
+  constructor(private ev :EvntesService,private router: Router, private googleAnalyticsService: GoogleAnalyticsService){
+    this.router.events
+    .pipe(filter((event) => event instanceof NavigationEnd))
+    .subscribe((event: NavigationEnd) => {
+      this.googleAnalyticsService.sendPageView(event.urlAfterRedirects, event.url);
+    });
+  }
   ngOnInit() {
     // this.startCountdown();
 

@@ -2,7 +2,9 @@ import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
+import { GoogleAnalyticsService } from '../../@core/services/google-analytics.service';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-new-account',
@@ -13,12 +15,17 @@ import { Router } from '@angular/router';
 })
 export class NewAccountComponent {
   registerForm!:FormGroup
-  constructor(private fb :FormBuilder,private http :HttpClient , private route :Router){
+  constructor( private googleAnalyticsService: GoogleAnalyticsService,private fb :FormBuilder,private http :HttpClient , private route :Router){
   this.registerForm=fb.group({
     username:['',Validators.required],
     email: ['', [Validators.required, Validators.email]],
      password:['',Validators.required]
   })
+  this.route.events
+  .pipe(filter((event) => event instanceof NavigationEnd))
+  .subscribe((event: NavigationEnd) => {
+    this.googleAnalyticsService.sendPageView(event.urlAfterRedirects, event.url);
+  });
   }
   ngOnInit(){
   }

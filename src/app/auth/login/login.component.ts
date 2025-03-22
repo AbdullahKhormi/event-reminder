@@ -1,14 +1,15 @@
 import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
 import { Component, Input } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
-import { Observable } from 'rxjs';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
+import { filter, Observable } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { AuthService } from '../../@core/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { EvntesService } from '../../@core/services/evntes.service';
+import { GoogleAnalyticsService } from '../../@core/services/google-analytics.service';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -22,11 +23,16 @@ export class LoginComponent {
   receiveObj:any
     @Input() imgLogo ='../../../assets/common/logo.jpeg'
   loginForm!:FormGroup
-constructor(private fb :FormBuilder,private http :HttpClient , private route :Router,private authService:AuthService,private evS:EvntesService,private messageService:MessageService){
+constructor(private fb :FormBuilder,private http :HttpClient ,private googleAnalyticsService: GoogleAnalyticsService, private route :Router,private authService:AuthService,private evS:EvntesService,private messageService:MessageService){
 this.loginForm=fb.group({
   email: ['', [Validators.required, Validators.email]],
    password:['',Validators.required]
 })
+this.route.events
+.pipe(filter((event) => event instanceof NavigationEnd))
+.subscribe((event: NavigationEnd) => {
+  this.googleAnalyticsService.sendPageView(event.urlAfterRedirects, event.url);
+});
 }
 getUsers(): Observable<any> {
   return this.http.get(`http://localhost:1337/users`);
