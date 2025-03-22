@@ -7,6 +7,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { NewAccountComponent } from './auth/new-account/new-account.component';
 import { AuthGuard } from './@core/guards/auth.guard';
 import { EditEventComponent } from './@views/edit-event/edit-event.component';
+import { NotFoundComponent } from './auth/not-found/not-found.component';
 
 export const routes: Routes = [
   {
@@ -49,5 +50,7 @@ export const routes: Routes = [
 
       },
     ],
+
   },
+  {path:'**',component:NotFoundComponent},
 ];
