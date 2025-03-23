@@ -72,36 +72,41 @@ sendForm() {
 
     this.authService.login(loginData.identifier, loginData.password).subscribe(
       (response: any) => {
+        // تخزين الـ JWT في localStorage
         localStorage.setItem('jwt', response.jwt);
 
-        // this.evS.getProtectedData().subscribe(
-        //   (data) => {
-        //   },
-        //   (error) => {
-        //   }
-        // );
+        // إذا كان الرد يحتوي على بيانات المستخدم (مثل username أو user)
+        if (response.user) {
+          localStorage.setItem('username', response.user.username);  // تخزين اسم المستخدم
+        }
 
-        const decodedToken = this.evS.getDecodedToken();
+        // أو استخراج اسم المستخدم من الـ JWT إذا كان مخزنًا داخله
+        const decodedToken = this.getDecodedToken();
+        if (decodedToken ) {
+          // localStorage.setItem('username', decodedToken.username);
+        }
 
-        setTimeout(()=>{
+        setTimeout(() => {
           this.messageService.add({
             severity: 'success',
-                  summary: 'Success',
-                  detail: `Login Successfully`,
+            summary: 'Success',
+            detail: `Login Successfully`,
           });
-        },1000);
-        setTimeout(()=>{
+        }, 1000);
+
+        setTimeout(() => {
           this.route.navigate(['home']);
-        },3000);
+        }, 3000);
       },
       (error) => {
-
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: `Invalid email or password`,
-          });  },
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: `Invalid email or password`,
+        });
+      }
     );
   }
 }
+
 }

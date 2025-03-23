@@ -10,8 +10,10 @@ import { AuthService } from '../../../@core/services/auth.service';
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
-constructor(private auth:AuthService){
+  userName:any
 
+constructor(private auth:AuthService){
+  this.userName=localStorage.getItem('username')
 }
 logout(){
   this.auth.logout()
