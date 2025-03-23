@@ -20,6 +20,9 @@ export class AuthService {
     return new Observable((observer) => {
       axios.post(`${this.apiUrl}/auth/local`, loginData)
         .then(response => {
+          localStorage.setItem('jwt', response.data.jwt);
+          localStorage.setItem('email', email);
+
           observer.next(response.data);
           observer.complete();
         })
@@ -31,6 +34,7 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem('jwt');
+    localStorage.removeItem('email');
     this.router.navigate(['/auth']);
   }
   private sendObj = new BehaviorSubject({});

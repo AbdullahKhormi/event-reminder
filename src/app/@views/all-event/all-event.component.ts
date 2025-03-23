@@ -80,28 +80,42 @@ export class AllEventComponent implements OnInit {
     );
   }
 
-  send(event:any){
-
-
-const eventDate = new Date(event.dateEvent);
-  const formattedDate = eventDate.toLocaleString('en-GB', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false
-  });
-  const messageContent = `
-  There is not much left for your event
-       - Event Name -: ${event.nameEvent} - Event Date -: ${formattedDate}`
-    emailjs.init('AG9bmRQp2QgOY-_Cd')
-    emailjs.send("service_mmfdc5h","template_5t4yvq4",{
-      email:'akhormi.1@outlook.com',
-    message: messageContent,
-      title:event.nameEvent
+  send(event: any) {
+    const email = localStorage.getItem('email')
+    const eventDate = new Date(event.dateEvent);
+    const formattedDate = eventDate.toLocaleString('en-GB', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
     });
 
+    const messageContent = `
+    There is not much left for your event
+         - Event Name -: ${event.nameEvent} - Event Date -: ${formattedDate}`;
+
+    emailjs.init('AG9bmRQp2QgOY-_Cd');
+    emailjs.send('service_mmfdc5h', 'template_5t4yvq4', {
+      email: email,
+      message: messageContent,
+      title: event.nameEvent,
+    })
+    .then((response) => {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Event email sent successfully',
+      });
+    })
+    .catch((error) => {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Failed to send email',
+      });
+    });
   }
 
 }
