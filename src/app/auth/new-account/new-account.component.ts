@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { NavigationEnd, Router } from '@angular/router';
 import { GoogleAnalyticsService } from '../../@core/services/google-analytics.service';
 import { filter } from 'rxjs';
+import { environment } from '../../../environments/environment.production';
 
 @Component({
   selector: 'app-new-account',
@@ -14,6 +15,7 @@ import { filter } from 'rxjs';
   styleUrl: './new-account.component.scss'
 })
 export class NewAccountComponent {
+  private url= environment.apiBaseUrl
   registerForm!:FormGroup
   constructor( private googleAnalyticsService: GoogleAnalyticsService,private fb :FormBuilder,private http :HttpClient , private route :Router){
   this.registerForm=fb.group({
@@ -44,7 +46,7 @@ export class NewAccountComponent {
         password:this.registerForm.controls['password'].value
       };
 
-      this.http.post('http://localhost:1337/api/auth/local/register', loginData)
+      this.http.post(`${this.url}/auth/local/register`, loginData)
         .subscribe(response => {
           this.route.navigate(['auth'])
 

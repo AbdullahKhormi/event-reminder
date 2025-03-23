@@ -23,7 +23,6 @@ export class AllEventComponent implements OnInit {
   totalRecords: number = 0;
   first: number = 0;
   rows: number = 10;
-  private url = 'http://localhost:1337/api/events';
   loading: boolean = true;
 
   constructor(private getData: EvntesService,private messageService:MessageService,private http :HttpClient,private router: Router, private googleAnalyticsService: GoogleAnalyticsService) {
@@ -58,20 +57,7 @@ export class AllEventComponent implements OnInit {
     this.rows = event.rows;
     this.loadEvents();
   }
-  delete(postId:any){
-    this.http.delete<any>(`${this.url}/${postId}`).subscribe(
-      (data) => {
-        alert("data")
 
-
-           }
-
-          , (error) => {
-            if(error.error.error.status==500){
-            // this.getData()
-            }
-          })
-  }
   deleteEvent(eventId: number): void {
     this.getData.deleteData(eventId).subscribe(
       (response) => {

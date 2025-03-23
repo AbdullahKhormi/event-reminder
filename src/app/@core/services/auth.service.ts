@@ -3,12 +3,12 @@ import axios from 'axios';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
-
+import { environment } from '../../../environments/environment.production';
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:1337/api';
+  private apiUrl = environment.apiBaseUrl;
 
   constructor(private router: Router) {}
   isLoggedIn(): boolean {

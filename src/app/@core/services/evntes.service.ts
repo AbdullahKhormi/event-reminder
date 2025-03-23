@@ -3,14 +3,14 @@ import { Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
 import { Observable } from 'rxjs';
 import axios from 'axios';
-
+import { environment } from '../../../environments/environment.production';
 @Injectable({
   providedIn: 'root'
 })
 export class EvntesService {
 
   constructor(private http: HttpClient) {}
-  private apiUrl = 'http://localhost:1337/api';
+  private apiUrl = environment.apiBaseUrl;
 
   getEventById1(eventId: number): Observable<any> {
     const token = localStorage.getItem('jwt');

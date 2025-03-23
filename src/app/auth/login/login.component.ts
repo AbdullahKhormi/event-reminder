@@ -10,6 +10,7 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { EvntesService } from '../../@core/services/evntes.service';
 import { GoogleAnalyticsService } from '../../@core/services/google-analytics.service';
+import { environment } from '../../../environments/environment.production';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -19,6 +20,7 @@ import { GoogleAnalyticsService } from '../../@core/services/google-analytics.se
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
+  private url =environment.apiBaseUrl
   isShow=false
   receiveObj:any
     @Input() imgLogo ='../../../assets/common/logo.jpeg'
@@ -31,7 +33,7 @@ this.loginForm=fb.group({
 
 }
 getUsers(): Observable<any> {
-  return this.http.get(`http://localhost:1337/users`);
+  return this.http.get(`${this.url}/users`);
 }
 ngOnInit(){
 
