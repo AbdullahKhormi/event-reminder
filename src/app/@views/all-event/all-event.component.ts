@@ -98,7 +98,7 @@ export class AllEventComponent implements OnInit {
 
     emailjs.init('AG9bmRQp2QgOY-_Cd');
     emailjs.send('service_mmfdc5h', 'template_5t4yvq4', {
-      email: email,
+      email: 'akhormi.1@outlook.com',
       message: messageContent,
       title: event.nameEvent,
     })
