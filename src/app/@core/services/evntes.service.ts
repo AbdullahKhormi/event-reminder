@@ -4,9 +4,13 @@ import { jwtDecode } from 'jwt-decode';
 import { Observable } from 'rxjs';
 import axios from 'axios';
 import { environment } from '../../../environments/environment.production';
+interface CustomJwtPayload {
+  id: number;
+}
 @Injectable({
   providedIn: 'root'
 })
+
 export class EvntesService {
 
   constructor(private http: HttpClient) {}
@@ -40,26 +44,33 @@ export class EvntesService {
     if (!token) {
       throw new Error('Token is missing');
     }
+
     const userId = this.getUserId();
+
     return new Observable((observer) => {
       const start = (page - 1) * pageSize;
 
-      axios.get(`${this.apiUrl}/events?pagination[start]=${start}&pagination[limit]=${pageSize}&sort=nameEvent:desc`, {
+      axios.get(`${this.apiUrl}/events`, {
         headers: {
-          Authorization: `Bearer ${token}`
-        },params: {
-          userId: userId
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          userId: userId,
+          "pagination[start]": start,
+          "pagination[limit]": pageSize,
+          "sort": "nameEvent:desc",
         }
       })
-        .then(response => {
-          observer.next(response.data);
-          observer.complete();
-        })
-        .catch(error => {
-          observer.error(error);
-        });
+      .then(response => {
+        observer.next(response.data);
+        observer.complete();
+      })
+      .catch(error => {
+        observer.error(error);
+      });
     });
   }
+
   getData(){
     const token = localStorage.getItem('jwt');
     if (!token) {
@@ -179,7 +190,26 @@ export class EvntesService {
   }
   getUserId(): number | null {
     const decodedToken = this.getDecodedToken();
-    console.log(decodedToken)
     return decodedToken ? decodedToken.id : null;
+  }
+  getUserIdFromToken(): number | null {
+    const token = localStorage.getItem('jwt');
+    if (token) {
+      try {
+        const decodedToken = jwtDecode<CustomJwtPayload>(token);
+        return decodedToken.id;
+      } catch (error) {
+        return null;
+      }
+    }
+    return null;
+  }
+
+  getEvents() {
+    const userId = this.getUserIdFromToken();
+    if (userId) {
+      return this.http.get(`${this.apiUrl}/events?userId=${userId}`);
+    }
+    return this.http.get(`${this.apiUrl}/events`);
   }
 }

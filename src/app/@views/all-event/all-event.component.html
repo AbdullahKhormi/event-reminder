@@ -22,9 +22,13 @@
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-event>
-            <tr>
+            <tr  [ngStyle]="{
+              'background-color': event.isExpiredDate ? '#f8d7da' : '#d4edda',
+              'color': event.isExpiredDate ? 'red' : 'green'
+            }">
               <td>{{ event.nameEvent }}</td>
               <td>{{ event.dateEvent | date: 'yyyy-MM-dd HH:mm:ss a' }}</td>
+
               <td>
               <div>
                 <button class="icon-actions" [routerLink]="'../edit-events/'+event?.id" ><i class="pi pi-pencil                  " ></i>

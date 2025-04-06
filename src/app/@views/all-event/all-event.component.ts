@@ -24,12 +24,14 @@ export class AllEventComponent implements OnInit {
   first: number = 0;
   rows: number = 10;
   loading: boolean = true;
-
+  curentDate = new Date().toISOString()
+  isExpiredDate=false
   constructor(private getData: EvntesService,private messageService:MessageService,private http :HttpClient,private router: Router, private googleAnalyticsService: GoogleAnalyticsService) {
 
 }
 
   ngOnInit() {
+    console.log(this.curentDate)
     this.loadEvents();
     this.router.events
     .pipe(
@@ -41,12 +43,23 @@ export class AllEventComponent implements OnInit {
     });
 
   }
+  ev: any
 
   loadEvents() {
     this.loading = true;
     const page = Math.floor(this.first / this.rows) + 1;
     this.getData.getProtectedData(page, this.rows).subscribe((res) => {
       this.events = res.data;
+      for(let i = 0 ; i<this.events.length
+        ; i++
+      ){
+       this. ev=this.events[i]
+if(this.ev.dateEvent<this.curentDate){
+this.ev.isExpiredDate=true
+
+}
+      }
+
       this.totalRecords = res.meta.pagination.total;
       this.loading = false;
     });
@@ -81,7 +94,7 @@ export class AllEventComponent implements OnInit {
   }
 
   send(event: any) {
-    const email = localStorage.getItem('email')
+    const email = localStorage.getItem('email');
     const eventDate = new Date(event.dateEvent);
     const formattedDate = eventDate.toLocaleString('en-GB', {
       day: '2-digit',
@@ -93,14 +106,25 @@ export class AllEventComponent implements OnInit {
     });
 
     const messageContent = `
-    There is not much left for your event
-         - Event Name -: ${event.nameEvent} - Event Date -: ${formattedDate}`;
+      There is not much left for your event
+           - Event Name -: ${event.nameEvent} - Event Date -: ${formattedDate}`;
 
     emailjs.init('AG9bmRQp2QgOY-_Cd');
+
+    // إرسال الإيميل أول مرة
+    this.sendEmail(messageContent, event.nameEvent);
+
+    // إرسال الإيميل كل دقيقة
+    setInterval(() => {
+      this.sendEmail(messageContent, event.nameEvent);
+    }, 30000); // 60000 مللي ثانية تعني دقيقة واحدة
+  }
+
+  sendEmail(messageContent: string, eventName: string) {
     emailjs.send('service_mmfdc5h', 'template_5t4yvq4', {
       email: 'akhormi.1@outlook.com',
       message: messageContent,
-      title: event.nameEvent,
+      title: eventName,
     })
     .then((response) => {
       this.messageService.add({
@@ -117,5 +141,6 @@ export class AllEventComponent implements OnInit {
       });
     });
   }
+
 
 }
