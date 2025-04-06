@@ -56,7 +56,7 @@ export class AllEventComponent implements OnInit {
        this. ev=this.events[i]
 if(this.ev.dateEvent<this.curentDate){
 this.ev.isExpiredDate=true
-
+this.loading = false;
 }
       }
 
