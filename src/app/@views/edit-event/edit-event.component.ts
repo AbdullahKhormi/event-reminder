@@ -59,13 +59,11 @@ export class EditEventComponent implements OnInit {
   loadEventData(): void {
     this.eventService.getEventById(this.eventId).subscribe(
       (res) => {
-        console.log(res.data)
         if (res.data) {
 
           const selectedItem = res.data;
           if (selectedItem) {
             this.event = selectedItem;
-            console.log(this.event.dateEvent)
             const formattedDate = this.formatDateForInput(this.event.dateEvent);
 
             this.editEventForm.patchValue({
@@ -91,11 +89,9 @@ export class EditEventComponent implements OnInit {
     return `${year}-${month}-${day}T${hours}:${minutes}`;
   }
   onDateChange(): void {
-    console.log('Date changed:', this.editEventForm.get('dateEvent')?.value);
   }
 
   onInputClick(): void {
-    console.log('Input clicked');
   }
 
   updateEvent(): void {

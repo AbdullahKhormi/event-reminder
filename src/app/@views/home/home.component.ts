@@ -40,7 +40,7 @@ export class HomeComponent  implements OnInit, OnDestroy{
 }
   getClosestEvent() {
     this.ev.getData().subscribe((res:any)=>{
-      this.events=res.data
+      this.events=res.data.results
       const currentDate = new Date();
 
       // Sort events by dateEvent (ascending)

@@ -29,7 +29,6 @@ export class EvntesService {
         }
       })
       .then(response => {
-        console.log(response)
         observer.next(response.data);
         observer.complete();
       })
@@ -55,7 +54,6 @@ export class EvntesService {
           Authorization: `Bearer ${token}`,
         },
         params: {
-          userId: userId,
           "pagination[start]": start,
           "pagination[limit]": pageSize,
           "sort": "nameEvent:desc",

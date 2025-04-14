@@ -31,7 +31,6 @@ export class AllEventComponent implements OnInit {
 }
 
   ngOnInit() {
-    console.log(this.curentDate)
     this.loadEvents();
     this.router.events
     .pipe(
@@ -49,7 +48,7 @@ export class AllEventComponent implements OnInit {
     this.loading = true;
     const page = Math.floor(this.first / this.rows) + 1;
     this.getData.getProtectedData(page, this.rows).subscribe((res) => {
-      this.events = res.data;
+      this.events = res.data.results;
       for(let i = 0 ; i<this.events.length
         ; i++
       ){
@@ -60,9 +59,12 @@ this.loading = false;
 }
       }
 
-      this.totalRecords = res.meta.pagination.total;
-      this.loading = false;
+      this.loading=false
+
+      this.totalRecords = res.data.pagination.total;
+
     });
+
   }
 
   paginate(event: any) {
