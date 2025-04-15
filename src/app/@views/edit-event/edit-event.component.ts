@@ -8,6 +8,7 @@ import { ToastModule } from 'primeng/toast';
 import { CalendarModule } from 'primeng/calendar';
 import { GoogleAnalyticsService } from '../../@core/services/google-analytics.service';
 import { filter } from 'rxjs';
+import { DataMongoService } from '../../@core/services/data-mongo.service';
 
 @Component({
   selector: 'app-edit-event',
@@ -22,7 +23,7 @@ export class EditEventComponent implements OnInit {
 
   editEventForm!: FormGroup;
   minDate!: string;
-  eventId!: number;
+  eventId!: string;
   event: any = {};
 
   constructor(
@@ -30,14 +31,14 @@ export class EditEventComponent implements OnInit {
     private messageService: MessageService,
     private eventService: EvntesService,
     private route: ActivatedRoute,
-    private router: Router, private googleAnalyticsService: GoogleAnalyticsService
+    private router: Router, private googleAnalyticsService: GoogleAnalyticsService,private mongo:DataMongoService
   ) {
 
   }
 
   ngOnInit(): void {
     this.minDate = new Date().toISOString().split('T')[0];
-    this.eventId = +this.route.snapshot.paramMap.get('id')!;
+    this.eventId = this.route.snapshot.paramMap.get('id')!;
     if (this.eventId) {
       this.loadEventData();
     } else {
@@ -57,17 +58,21 @@ export class EditEventComponent implements OnInit {
     });
 }
   loadEventData(): void {
-    this.eventService.getEventById(this.eventId).subscribe(
+    this.mongo.getById(this.eventId).subscribe(
       (res) => {
-        if (res.data) {
 
-          const selectedItem = res.data;
+        if (res) {
+
+          const selectedItem = res;
+
           if (selectedItem) {
             this.event = selectedItem;
-            const formattedDate = this.formatDateForInput(this.event.dateEvent);
+            console.log( this.event)
+
+            const formattedDate = this.formatDateForInput(this.event.eventDate);
 
             this.editEventForm.patchValue({
-              nameEvent: this.event.nameEvent,
+              nameEvent: this.event.eventName,
               dateEvent: formattedDate
             });
           }
@@ -100,14 +105,14 @@ export class EditEventComponent implements OnInit {
     }
 
     const updatedData = {
-      data: {
-        nameEvent: this.editEventForm.controls['nameEvent'].value,
 
-        dateEvent: this.editEventForm.controls['dateEvent'].value
-      }
+        eventName: this.editEventForm.controls['nameEvent'].value,
+
+        eventDate: this.editEventForm.controls['dateEvent'].value
+
     };
     if (this.eventId) {
-      this.eventService.updateData(this.eventId, updatedData).subscribe(
+      this.mongo.updateEvent(this.eventId, updatedData).subscribe(
         (response) => {
           setTimeout(() => {
             this.messageService.add({

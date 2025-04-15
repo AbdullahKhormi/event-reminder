@@ -10,6 +10,7 @@ import emailjs, { type EmailJSResponseStatus } from '@emailjs/browser';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { GoogleAnalyticsService } from '../../@core/services/google-analytics.service';
 import { filter } from 'rxjs';
+import { DataMongoService } from '../../@core/services/data-mongo.service';
 @Component({
   selector: 'app-all-event',
   standalone: true,
@@ -26,44 +27,52 @@ export class AllEventComponent implements OnInit {
   loading: boolean = true;
   curentDate = new Date().toISOString()
   isExpiredDate=false
-  constructor(private getData: EvntesService,private messageService:MessageService,private http :HttpClient,private router: Router, private googleAnalyticsService: GoogleAnalyticsService) {
+  constructor(private getData: EvntesService,private messageService:MessageService,private http :HttpClient,private router: Router,
+     private googleAnalyticsService: GoogleAnalyticsService , private mongoD:DataMongoService) {
 
+}
+getAll() {
+  this.mongoD.getAll().subscribe(res => {
+    this.events = res; // نعيّن البيانات مباشرة هنا
+    this.events.forEach(ev => {
+      ev.isExpiredDate = ev.eventDate < this.curentDate;
+    });
+
+    this.loading = false;
+
+    // لو تبي تعرض رسالة لما القائمة تكون فاضية
+    if (this.events.length === 0) {
+    }
+  });
 }
 
   ngOnInit() {
-    this.loadEvents();
-    this.router.events
-    .pipe(
-      filter((event) => event instanceof NavigationEnd)
-    )
-    .subscribe((event: any) => {
-      // Access urlAfterRedirects from NavigationEnd event
-      this.googleAnalyticsService.sendPageView(event.urlAfterRedirects, event.urlAfterRedirects);
-    });
+this.getAll()
+
 
   }
   ev: any
 
-  loadEvents() {
-    this.loading = true;
-    const page = Math.floor(this.first / this.rows) + 1;
-    this.getData.getProtectedData(page, this.rows).subscribe((res) => {
-      this.events = res.data.results;
-      for(let i = 0 ; i<this.events.length
-        ; i++
-      ){
-       this. ev=this.events[i]
-if(this.ev.dateEvent<this.curentDate){
-this.ev.isExpiredDate=true
-this.loading = false;
-}
-      }
+  loadEvents() { //strapi
+// //     this.loading = true;
+// //     const page = Math.floor(this.first / this.rows) + 1;
+// //     this.getData.getProtectedData(page, this.rows).subscribe((res) => {
+// //       this.events = res.data.results;
+// //       for(let i = 0 ; i<this.events.length
+// //         ; i++
+// //       ){
+// //        this. ev=this.events[i]
+// // if(this.ev.dateEvent<this.curentDate){
+// // this.ev.isExpiredDate=true
+// // this.loading = false;
+// // }
+// //       }
 
-      this.loading=false
+//       this.loading=false
 
-      this.totalRecords = res.data.pagination.total;
+//       this.totalRecords = res.data.pagination.total;
 
-    });
+//     });
 
   }
 
@@ -73,27 +82,61 @@ this.loading = false;
     this.loadEvents();
   }
 
-  deleteEvent(eventId: number): void {
-    this.getData.deleteData(eventId).subscribe(
-      (response) => {
-      },
-      (error) => {
-        if ( error.response.status === 500) {
-          setTimeout(() => {
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Success',
-              detail: `Event Deleted Successfully`,
-            });
-          }, 2200);
+  deleteEvent(eventId: number): void { //strapi
+    // this.getData.deleteData(eventId).subscribe(
+    //   (response) => {
+    //   },
+    //   (error) => {
+    //     if ( error.response.status === 500) {
+    //       setTimeout(() => {
+    //         this.messageService.add({
+    //           severity: 'success',
+    //           summary: 'Success',
+    //           detail: `Event Deleted Successfully`,
+    //         });
+    //       }, 2200);
 
-          setTimeout(() => {
-            this.loadEvents();
-          }, 3200);
-        }
-      }
-    );
+    //       setTimeout(() => {
+    //         this.loadEvents();
+    //       }, 3200);
+    //     }
+    //   }
+    // );
   }
+  isDeleting: { [id: string]: boolean } = {}; // حالة الحذف لكل event
+
+  delete(id: string) {
+    if (this.isDeleting[id]) return;
+    this.isDeleting[id] = true;
+
+    this.mongoD.deleteEvent(id).subscribe({
+      next: () => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: `Event Deleted Successfully`,
+        });
+      },
+      error: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: `Event Deletion Failed`,
+        });
+        this.isDeleting[id] = false;
+      },
+      complete: () => {
+        setTimeout(() => {
+          this.getAll();
+          this.isDeleting[id] = false;
+        }, 1500);
+      }
+    });
+  }
+
+
+
+
 
   send(event: any) {
     const email = localStorage.getItem('email');

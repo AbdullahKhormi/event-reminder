@@ -9,6 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
 import { NavigationEnd, Router } from '@angular/router';
 import { GoogleAnalyticsService } from '../../@core/services/google-analytics.service';
 import { filter } from 'rxjs';
+import { DataMongoService } from '../../@core/services/data-mongo.service';
 
 @Component({
   selector: 'app-create-event',
@@ -25,7 +26,7 @@ export class CreateEventComponent {
   minDate: string = '';
 
   addEventForm!:FormGroup
-  constructor(private fb :FormBuilder , private ev:EvntesService,private messageService :MessageService ,private router:Router,private googleAnalyticsService: GoogleAnalyticsService){
+  constructor(private fb :FormBuilder , private ev:EvntesService,private messageService :MessageService ,private router:Router,private googleAnalyticsService: GoogleAnalyticsService , private mongo:DataMongoService){
 this.addEventForm=fb.group({
   nameEvent:['',Validators.required],
   dateEvent:['',Validators.required]
@@ -85,9 +86,14 @@ addEvent(){
     const dateEventValue = this.addEventForm.value.dateEvent
     const date = new Date(dateEventValue);
     const isoDate = date.toISOString();
-    formData.append('data[nameEvent]', this.addEventForm.value.nameEvent);
-    formData.append('data[dateEvent]', isoDate);
-this.ev.postData(formData).subscribe(res=>{
+
+    // formData.append('data[eventName]', this.addEventForm.value.nameEvent); //strapi
+    // formData.append('data[eventDate]', isoDate);
+    const data = { //// nodeJs + mongoDB
+      eventName: this.addEventForm.value.nameEvent,
+      eventDate: isoDate
+    };
+this.mongo.postEvent(data).subscribe(res=>{
   setTimeout(() => {
     this.messageService.add({
       severity: 'success',
