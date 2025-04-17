@@ -63,10 +63,49 @@ getDecodedToken() {
   return null;
 }
 
-sendForm() {
-  setTimeout(() => {
-    this.route.navigate(['home']);
-  }, 3000);
+sendForm() {  if (this.loginForm.valid) {
+  const loginData = {
+    email: this.loginForm.controls['email'].value,
+    password: this.loginForm.controls['password'].value,
+  };
+
+  this.authService.login(loginData.email, loginData.password).subscribe(
+    (response: any) => {
+      console.log(response);
+
+      localStorage.setItem('jwt', response.token);
+      if (response.user) {
+        localStorage.setItem('username', response.user.userName);
+      }
+
+      const decodedToken = this.getDecodedToken();
+
+      setTimeout(() => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: `Login Successfully`,
+        });
+      }, 1000);
+
+      setTimeout(() => {
+        this.route.navigate(['home']);
+      }, 3000);
+    },
+    (error) => {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: `Invalid email or password`,
+      });
+    }
+  );
+
+}
+
+  // setTimeout(() => {
+  //   this.route.navigate(['home']);
+  // }, 3000);
 }
 
 }

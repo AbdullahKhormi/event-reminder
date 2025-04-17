@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
-import { environment } from '../../../environments/environment.production';
+import { environment } from '../../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
@@ -16,11 +16,12 @@ export class AuthService {
     return !!token;
   }
   login(email: string, password: string): Observable<any> {
-    const loginData = { identifier: email, password: password };
+    const loginData = { email: email, password: password };
     return new Observable((observer) => {
-      axios.post(`${this.apiUrl}/auth/local`, loginData)
-        .then(response => {
-          localStorage.setItem('jwt', response.data.jwt);
+      axios.post(`${this.apiUrl}/users/login`, loginData)
+        .then((response:any) => {
+          console.log(response.data.token)
+          localStorage.setItem('jwt', response.data.token);
           localStorage.setItem('email', email);
 
           observer.next(response.data);
