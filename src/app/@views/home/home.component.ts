@@ -5,6 +5,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { filter } from 'rxjs';
 import { GoogleAnalyticsService } from '../../@core/services/google-analytics.service';
 import { HttpClient } from '@angular/common/http';
+import { DataMongoService } from '../../@core/services/data-mongo.service';
 
 @Component({
   selector: 'app-home',
@@ -22,7 +23,7 @@ export class HomeComponent  implements OnInit, OnDestroy{
   events:any[]=[]
   closestEvent: any;
 
-  constructor(private ev :EvntesService,private router: Router, private googleAnalyticsService: GoogleAnalyticsService ,private http:HttpClient){
+  constructor(private ev :EvntesService,private router: Router, private googleAnalyticsService: GoogleAnalyticsService ,private http:HttpClient ,private mongo:DataMongoService){
 
   }
   ngOnInit() {
@@ -40,24 +41,27 @@ export class HomeComponent  implements OnInit, OnDestroy{
       this.googleAnalyticsService.sendPageView(event.urlAfterRedirects, event.urlAfterRedirects);
     });
 }
-  getClosestEvent() {
-    // this.ev.getData().subscribe((res:any)=>{
-    //   this.events=res.data.results
-    //   const currentDate = new Date();
+getClosestEvent() {
+  this.mongo.getAll().subscribe((res: any) => {
+    console.log(res);
+    this.events = res;
+    const currentDate = new Date();
 
-    //   // Sort events by dateEvent (ascending)
-    //   this.events.sort((a, b) => new Date(a.dateEvent).getTime() - new Date(b.dateEvent).getTime());
+    // Sort events by eventDate (ascending)
+    this.events.sort(
+      (a, b) =>
+        new Date(a.eventDate).getTime() - new Date(b.eventDate).getTime()
+    );
 
-    //   // Find the closest event that is in the future
-    //   for (let event of this.events) {
-    //     if (new Date(event.dateEvent).getTime() > currentDate.getTime()) {
-    //       this.closestEvent = event;
-    //       break;
-    //     }
-    //   }          })
-
-
-  }
+    // Find the closest event that is in the future
+    for (let event of this.events) {
+      if (new Date(event.eventDate).getTime() > currentDate.getTime()) {
+        this.closestEvent = event;
+        break;
+      }
+    }
+  });
+}
   ngOnDestroy() {
     if (this.timer) {
       clearInterval(this.timer);  // Clean up the timer when the component is destroyed

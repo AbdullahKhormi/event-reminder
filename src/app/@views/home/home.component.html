@@ -28,8 +28,8 @@
                 <div>
                     <div *ngIf="closestEvent">
                         <h5>Closest Event:</h5>
-                        <p>Name: {{ closestEvent.nameEvent }}</p>
-                        <p>Date: {{ closestEvent.dateEvent | date: 'd/MM/yyyy ,h:mm a' }}</p>
+                        <p>Name: {{ closestEvent.eventName }}</p>
+                        <p>Date: {{ closestEvent.eventDate | date: 'd/MM/yyyy ,h:mm a' }}</p>
                       </div>
 
                       <div *ngIf="!closestEvent">
