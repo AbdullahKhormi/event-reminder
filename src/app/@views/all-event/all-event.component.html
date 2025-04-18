@@ -41,12 +41,12 @@
 
               <td>
               <div>
-                <button class="pr-5" [routerLink]="'../edit-events/'+event?._id" ><i class="pi pi-pencil                  " ></i>
+                <button class="pr-2" [routerLink]="'../edit-events/'+event?._id" ><i class="pi pi-pencil                  " ></i>
                 </button>
-                <button class="icon-actions" (click)="send(event)"><i class="pi pi-bell "></i>
+                <button class="pr-2" (click)="send(event)"><i class="pi pi-bell "></i>
                 </button>
 
-                <button class="icon-actions" (click)="delete(event._id)" ><i class="pi pi-trash" style="color: red"></i>
+                <button class="pr-2" (click)="delete(event._id)" ><i class="pi pi-trash" style="color: red"></i>
                 </button>
               </div>
               </td>

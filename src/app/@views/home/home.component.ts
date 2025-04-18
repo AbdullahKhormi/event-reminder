@@ -16,6 +16,13 @@ import { DataMongoService } from '../../@core/services/data-mongo.service';
   styleUrl: './home.component.scss'
 })
 export class HomeComponent  implements OnInit, OnDestroy{
+  request: any = {
+    first: 0,
+    rows: 10,
+    sortDirection: 1,
+    sortColumn: ''
+
+  };
   eventTime: Date = new Date('2025-03-25T18:00:00');  // Event date and time
   remainingTime: string = '';
   timer: any;
@@ -42,25 +49,25 @@ export class HomeComponent  implements OnInit, OnDestroy{
     });
 }
 getClosestEvent() {
-  // this.mongo.getAll().subscribe((res: any) => {
-  //   console.log(res);
-  //   this.events = res;
-  //   const currentDate = new Date();
+  this.mongo.getAll(this.request).subscribe((res: any) => {
+    console.log(res);
+    this.events = res.events;
+    const currentDate = new Date();
 
-  //   // Sort events by eventDate (ascending)
-  //   this.events.sort(
-  //     (a, b) =>
-  //       new Date(a.eventDate).getTime() - new Date(b.eventDate).getTime()
-  //   );
+    // Sort events by eventDate (ascending)
+    this.events.sort(
+      (a, b) =>
+        new Date(a.eventDate).getTime() - new Date(b.eventDate).getTime()
+    );
 
-  //   // Find the closest event that is in the future
-  //   for (let event of this.events) {
-  //     if (new Date(event.eventDate).getTime() > currentDate.getTime()) {
-  //       this.closestEvent = event;
-  //       break;
-  //     }
-  //   }
-  // });
+    // Find the closest event that is in the future
+    for (let event of this.events) {
+      if (new Date(event.eventDate).getTime() > currentDate.getTime()) {
+        this.closestEvent = event;
+        break;
+      }
+    }
+  });
 }
   ngOnDestroy() {
     if (this.timer) {
