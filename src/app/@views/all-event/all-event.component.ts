@@ -22,8 +22,16 @@ import { DataMongoService } from '../../@core/services/data-mongo.service';
 export class AllEventComponent implements OnInit {
   events: any[] = [];
   totalRecords: number = 0;
-  first: number = 0;
-  rows: number = 10;
+  rows = 10;
+  first = 0;
+
+  request: any = {
+    first: 0,
+    rows: 10,
+    sortDirection: 1,
+    sortColumn: ''
+
+  };
   loading: boolean = true;
   curentDate = new Date().toISOString()
   isExpiredDate=false
@@ -31,25 +39,11 @@ export class AllEventComponent implements OnInit {
      private googleAnalyticsService: GoogleAnalyticsService , private mongoD:DataMongoService) {
 
 }
-getAll() {
-  this.mongoD.getAll().subscribe(res => {
-    this.events = res; // نعيّن البيانات مباشرة هنا
-    this.events.forEach(ev => {
-      ev.isExpiredDate = ev.eventDate < this.curentDate;
-    });
 
-    this.loading = false;
 
-    // لو تبي dتعرض رسالة لما القائمة تكون فاضية
-    if (this.events.length === 0) {
-    }
-  });
-}
 
   ngOnInit() {
-this.getAll()
-
-
+    this.getAll()
   }
   ev: any
 
@@ -76,10 +70,28 @@ this.getAll()
 
   }
 
-  paginate(event: any) {
-    this.first = event.first;
-    this.rows = event.rows;
-    this.loadEvents();
+  getAll() {
+    this.loading = true;
+
+    this.mongoD.getAll(this.request).subscribe(res => {
+      this.events = res.events;
+      this.totalRecords = res.totalRecords;
+
+      const now = new Date();
+      this.events.forEach(ev => {
+        ev.isExpiredDate = new Date(ev.eventDate) < now;
+      });
+
+      this.loading = false;
+    });
+  }
+
+  onPageChange(event: any) {
+    if (event.first !== this.request.first || event.rows !== this.request.rows) {
+      this.request.first = event.first;
+      this.request.rows = event.rows;
+      this.getAll(); // تحميل البيانات الجديدة فقط عند تغيير فعلي
+    }
   }
 
   deleteEvent(eventId: number): void { //strapi
@@ -127,7 +139,6 @@ this.getAll()
       },
       complete: () => {
         setTimeout(() => {
-          this.getAll();
           this.isDeleting[id] = false;
         }, 1500);
       }

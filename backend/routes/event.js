@@ -2,10 +2,18 @@ const express = require("express");
 const router = express.Router();
 const Event = require("./../db/events");
 const { deleteEvent, updateEvent ,getEvents } = require("./../handler/events-handler");
-router.get("",async (req,res)=>{
-    let result = await getEvents();
-    res.send(result)
-})
+router.get("", async (req, res) => {
+  const first = req.query.first || 0;
+  const rows = req.query.rows || 10;
+
+  try {
+    let result = await getEvents(first, rows);
+    res.send(result); // { events: [...], totalRecords: 100 }
+  } catch (err) {
+    res.status(500).send({ error: "Something went wrong." });
+  }
+});
+
 router.post("", async (req, res) => {
   // post method
   let eventData = req.body;

@@ -11,8 +11,15 @@ async function deleteEvent(id){
     return
 
 }
-async function getEvents(){
-let test = await Event.find();
-return test.map((e)=>e.toObject())
+async function getEvents(first = 0, rows = 10) {
+    const skip = parseInt(first);
+    const limit = parseInt(rows);
+
+    const [events, totalRecords] = await Promise.all([
+      Event.find().skip(skip).limit(limit).lean(),
+      Event.countDocuments()
+    ]);
+
+    return { events, totalRecords };
 }
 module.exports ={deleteEvent ,updateEvent,getEvents}
