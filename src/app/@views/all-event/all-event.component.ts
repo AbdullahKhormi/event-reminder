@@ -77,6 +77,8 @@ export class AllEventComponent implements OnInit {
       this.events = res.events;
       this.totalRecords = res.totalRecords;
 
+      this.first = this.request.first;
+
       const now = new Date();
       this.events.forEach(ev => {
         ev.isExpiredDate = new Date(ev.eventDate) < now;
@@ -90,9 +92,13 @@ export class AllEventComponent implements OnInit {
     if (event.first !== this.request.first || event.rows !== this.request.rows) {
       this.request.first = event.first;
       this.request.rows = event.rows;
-      this.getAll(); // تحميل البيانات الجديدة فقط عند تغيير فعلي
+
+      this.first = event.first;
+
+      this.getAll();
     }
   }
+
 
   deleteEvent(eventId: number): void { //strapi
     // this.getData.deleteData(eventId).subscribe(
@@ -115,8 +121,7 @@ export class AllEventComponent implements OnInit {
     //   }
     // );
   }
-  isDeleting: { [id: string]: boolean } = {}; // حالة الحذف لكل event
-
+  isDeleting: { [id: string]: boolean } = {};
   delete(id: string) {
     if (this.isDeleting[id]) return;
     this.isDeleting[id] = true;
@@ -167,13 +172,11 @@ export class AllEventComponent implements OnInit {
 
     emailjs.init('AG9bmRQp2QgOY-_Cd');
 
-    // إرسال الإيميل أول مرة
     this.sendEmail(messageContent, event.nameEvent);
 
-    // إرسال الإيميل كل دقيقة
     setInterval(() => {
       this.sendEmail(messageContent, event.nameEvent);
-    }, 30000); // 60000 مللي ثانية تعني دقيقة واحدة
+    }, 30000);
   }
 
   sendEmail(messageContent: string, eventName: string) {

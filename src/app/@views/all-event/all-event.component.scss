@@ -36,3 +36,25 @@
     z-index: 1000;
     color: #c3c3c3;
   }
+
+
+  :host ::ng-deep {
+    .p-paginator .p-paginator-pages {
+        @apply flex gap-x-2 ;
+      }
+
+    .p-paginator .p-paginator-pages .p-paginator-page {
+      @apply transition-all duration-200 ease-in-out  text-gray-700 border-2 border-transparent rounded-3xl ;
+    }
+
+    .p-paginator .p-paginator-pages .p-paginator-page:hover {
+      @apply bg-gray-200 text-black  border-gray-400 ;
+    }
+
+    .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+      @apply bg-gray-300 text-black  border-gray-400 font-semibold ;
+    }
+  }
+
+
+
