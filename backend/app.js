@@ -19,8 +19,8 @@ async function connectDb() {
     await mongoose.connect(process.env.MONGODB_URI, {
         dbName: "api-events"
     });
+    console.log("✅ Connected to MongoDB");
 }
-
 app.use("/event", eventRouter);
 app.use("/users", usersRouter);
 
