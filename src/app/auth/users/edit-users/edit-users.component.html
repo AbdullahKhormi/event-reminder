@@ -1,0 +1,72 @@
+<div class="container-fluid d-flex justify-content-center align-items-center" [ngStyle]="{'height': show ? '75vh' : '100vh'}"
+>
+<p-toast
+[showTransformOptions]="'translateY(100%)'"
+[showTransitionOptions]="'1000ms'"
+[hideTransitionOptions]="'1000ms'"
+[showTransformOptions]="'translateX(100%)'"
+/>
+    <div class="col-md-4">
+      <form [formGroup]="updateForm">
+        <div class="form-holder">
+
+          <!-- Username Field -->
+          <div class="mb-3">
+            <input
+              type="text"
+              formControlName="username"
+              class="form-control"
+              placeholder="UserName"
+              required>
+            <div *ngIf="updateForm.get('username')?.touched && updateForm.get('username')?.invalid" class="text-danger">
+              <div *ngIf="updateForm.get('username')?.hasError('required')">Username is required.</div>
+            </div>
+          </div>
+
+          <!-- Email Field -->
+          <div class="mb-3">
+            <input
+              type="email"
+              formControlName="email"
+              class="form-control"
+              placeholder="Email"
+              required>
+            <div *ngIf="updateForm.get('email')?.touched && updateForm.get('email')?.invalid" class="text-danger">
+              <div *ngIf="updateForm.get('email')?.hasError('required')">Email is required.</div>
+              <div *ngIf="updateForm.get('email')?.hasError('email')">Invalid email format.</div>
+            </div>
+          </div>
+
+          <!-- Password Field -->
+          <!-- <div class="mb-3">
+            <input
+              type="password"
+              formControlName="password"
+              class="form-control"
+              placeholder="Password"
+              required>
+            <div *ngIf="updateForm.get('password')?.touched && updateForm.get('password')?.invalid" class="text-danger">
+              <div *ngIf="updateForm.get('password')?.hasError('required')">Password is required.</div>
+            </div>
+          </div> -->
+          <!--roles-->
+          <div class="mb-3" *ngIf="show">
+            <input
+              type="text"
+              formControlName="roles"
+              class="form-control"
+              placeholder="Roles"
+              >
+            <div *ngIf="updateForm.get('roles')?.touched && updateForm.get('roles')?.invalid" class="text-danger">
+              <div *ngIf="updateForm.get('roles')?.hasError('required')">Role is required.</div>
+            </div>
+          </div>
+          <!-- Buttons -->
+          <div class="gap-2 d-flex">
+            <button type="submit" class="btn btn-primary" [disabled]="updateForm.invalid" (click)="sendForm()">Update Account</button>
+            <button type="button" class="btn btn-secondary" (click)="updateForm.reset()">Reset</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>

@@ -76,6 +76,8 @@ sendForm() {  if (this.loginForm.valid) {
       localStorage.setItem('jwt', response.token);
       if (response.user) {
         localStorage.setItem('username', response.user.userName);
+        localStorage.setItem('userId', response.user.userId);
+        localStorage.setItem('roles', response.user.roles);
       }
 
       const decodedToken = this.getDecodedToken();

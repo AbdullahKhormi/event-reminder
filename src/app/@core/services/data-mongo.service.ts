@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-  interface pagination {
+import { AuthService } from './auth.service';
+
+interface Pagination {
   first: number;
   rows: number;
   sortColumn: string;
@@ -11,38 +13,74 @@ import { environment } from '../../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-
 export class DataMongoService {
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
-  constructor(private http: HttpClient) {}
-    private apiUrl = environment.apiBaseUrl;
-    getAll(request: pagination) {
-      const { first, rows} = request;
-      const page = first / rows;
-      return this.http.get<any>(`${this.apiUrl}/event`, {
-        params: {
-          first: first.toString(),
-          rows: rows.toString()
-        }
-      });
-    }
+  private apiUrl = environment.apiBaseUrl;
 
+  getAll(request: Pagination) {
+    const { first, rows } = request;
+    const userId = this.authService.getDecodedToken()?.userId;
+    return this.http.get<any>(`${this.apiUrl}/event`, {
+      params: {
+        first: first.toString(),
+        rows: rows.toString(),
+        userId: userId?.toString()
+      }
+    });
+  }
 
-    getById(id:any){
-      return this.http.get<any>(this.apiUrl+'/event/'+id,{
+  getById(id: any) {
+    const userId = this.authService.getDecodedToken()?.userId;
+    return this.http.get<any>(`${this.apiUrl}/event/${id}`, {
+      params: { userId: userId?.toString() }
+    });
+  }
 
-      });
-    }
-    postEvent(data: any){
-      return this.http.post<any>(this.apiUrl+'/event',data);
-    }
-    deleteEvent(id:any){
-      return this.http.delete<any>(this.apiUrl+'/event/'+id,{
+  postEvent(data: any) {
+    const userId = this.authService.getDecodedToken()?.userId;
+    const eventData = { ...data, userId };
+    return this.http.post<any>(`${this.apiUrl}/event`, eventData);
+  }
 
-      });    }
-    updateEvent(id:any,data:any){
-      return this.http.put<any>(this.apiUrl+'/event/'+id,data
+  deleteEvent(id: any) {
+    const userId = this.authService.getDecodedToken()?.userId;
+    return this.http.delete<any>(`${this.apiUrl}/event/${id}`, {
+      params: { userId: userId?.toString() }
+    });
+  }
 
-      );    }
+  updateEvent(id: any, data: any) {
+    const userId = this.authService.getDecodedToken()?.userId;
+    const updatedData = { ...data, userId };
+    return this.http.put<any>(`${this.apiUrl}/event/${id}`, updatedData);
+  }
 
+  getAllUsers(request: Pagination) {
+    const { first, rows } = request;
+    const userId = this.authService.getDecodedToken()?.userId;
+    return this.http.get<any>(`${this.apiUrl}/users`, {
+      params: {
+        first: first.toString(),
+        rows: rows.toString(),
+        userId: userId?.toString()
+      }
+    });
+  }
+
+  getUsersById(id: any) {
+    const userId = this.authService.getDecodedToken()?.userId;
+    return this.http.get<any>(`${this.apiUrl}/users/${id}`);
+  }
+
+  deleteUsers(id: any) {
+    const userId = this.authService.getDecodedToken()?.userId;
+    return this.http.delete<any>(`${this.apiUrl}/users/${id}`);
+  }
+
+  updateUsers(id: any, data: any) {
+    const userId = this.authService.getDecodedToken()?.userId;
+    const updatedData = { ...data, userId };
+    return this.http.put<any>(`${this.apiUrl}/users/${id}`, updatedData);
+  }
 }

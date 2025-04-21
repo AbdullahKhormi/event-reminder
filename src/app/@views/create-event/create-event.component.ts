@@ -86,12 +86,12 @@ addEvent(){
     const dateEventValue = this.addEventForm.value.dateEvent
     const date = new Date(dateEventValue);
     const isoDate = date.toISOString();
-
+const userId = localStorage.getItem("userId")
     // formData.append('data[eventName]', this.addEventForm.value.nameEvent); //strapi
     // formData.append('data[eventDate]', isoDate);
     const data = { //// nodeJs + mongoDB
       eventName: this.addEventForm.value.nameEvent,
-      eventDate: isoDate
+      eventDate: isoDate,userId:userId
     };
 this.mongo.postEvent(data).subscribe(res=>{
   setTimeout(() => {

@@ -1,10 +1,9 @@
 <nav class="bg-body-tertiary shadow py-3">
   <div class="container d-flex align-items-center justify-content-between flex-wrap">
-    <a class="navbar-brand" [routerLink]="'/home'">
+    <a class="navbar-brand"  [routerLink]="usersRoles === 'admin' ? '/users' : '/home'">
       <img src="../../../../assets/common/logo.jpeg" alt="Logo" />
     </a>
 
-    <!-- زر الجوال -->
     <button
       (click)="menuOpen = !menuOpen"
       class="d-md-none border-0 bg-transparent"
@@ -12,23 +11,28 @@
       ☰
     </button>
 
-    <!-- قائمة سطح المكتب -->
     <div class="d-none d-md-flex align-items-center  justify-content-end">
       <h6 class="mb-0 me-3">Welcome, {{ userName }}</h6>
       <ul class="navbar-nav d-flex flex-row align-items-center">
-        <li class="nav-item me-3">
+        <li class="nav-item me-3"*ngIf="!showHome">
           <a class="nav-link" [routerLink]="'/home'">Home</a>
         </li>
-        <li class="nav-item me-3">
+        <li class="nav-item me-3" *ngIf="showHome">
+          <a class="nav-link" [routerLink]="'/users'">Home</a>
+        </li>
+        <li class="nav-item me-3" *ngIf="!showHome">
           <a class="nav-link" [routerLink]="'/add-events'">Create event</a>
         </li>
+        <li class="nav-item me-3" *ngIf="show">
+          <a class="nav-link" [routerLink]="'/registeration'">Create Account</a>
+        </li>
+
         <li class="nav-item">
           <a class="nav-link text-danger" style="cursor: pointer;" (click)="logout()">Logout</a>
         </li>
       </ul>
     </div>
 
-    <!-- قائمة الجوال -->
     <div *ngIf="menuOpen" class="d-md-none w-100 mt-3">
       <h6>Welcome, {{ userName }}</h6>
       <a class="nav-link" [routerLink]="'/home'">Home</a>

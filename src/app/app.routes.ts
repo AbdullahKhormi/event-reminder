@@ -8,6 +8,8 @@ import { NewAccountComponent } from './auth/new-account/new-account.component';
 import { AuthGuard } from './@core/guards/auth.guard';
 import { EditEventComponent } from './@views/edit-event/edit-event.component';
 import { NotFoundComponent } from './auth/not-found/not-found.component';
+import { UsersComponent } from './auth/users/users.component';
+import { EditUsersComponent } from './auth/users/edit-users/edit-users.component';
 
 export const routes: Routes = [
   {
@@ -49,6 +51,14 @@ export const routes: Routes = [
         canActivate:[AuthGuard]
 
       },
+      {
+        path: 'edit-users/:id',
+        component: EditUsersComponent,
+        canActivate:[AuthGuard]
+
+      },
+      {path:'users',component:UsersComponent,canActivate:[AuthGuard]}
+
     ],
 
   },

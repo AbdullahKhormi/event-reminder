@@ -1,4 +1,12 @@
-<div class="container-fluid d-flex justify-content-center align-items-center" style="height: 100vh;">
+<header *ngIf="show"><app-header></app-header></header>
+<div class="container-fluid d-flex justify-content-center align-items-center" [ngStyle]="{'height': show ? '75vh' : '100vh'}"
+>
+<p-toast
+[showTransformOptions]="'translateY(100%)'"
+[showTransitionOptions]="'1000ms'"
+[hideTransitionOptions]="'1000ms'"
+[showTransformOptions]="'translateX(100%)'"
+/>
     <div class="col-md-4">
       <form [formGroup]="registerForm">
         <div class="form-holder">
@@ -42,7 +50,18 @@
               <div *ngIf="registerForm.get('password')?.hasError('required')">Password is required.</div>
             </div>
           </div>
-
+          <!--roles-->
+          <div class="mb-3" *ngIf="show">
+            <input
+              type="text"
+              formControlName="roles"
+              class="form-control"
+              placeholder="Roles"
+              >
+            <div *ngIf="registerForm.get('roles')?.touched && registerForm.get('roles')?.invalid" class="text-danger">
+              <div *ngIf="registerForm.get('roles')?.hasError('required')">Role is required.</div>
+            </div>
+          </div>
           <!-- Buttons -->
           <div class="gap-2 d-flex">
             <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid" (click)="sendForm()">Create Account</button>

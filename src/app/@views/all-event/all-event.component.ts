@@ -145,6 +145,8 @@ export class AllEventComponent implements OnInit {
       complete: () => {
         setTimeout(() => {
           this.isDeleting[id] = false;
+
+          this.getAll()
         }, 1500);
       }
     });

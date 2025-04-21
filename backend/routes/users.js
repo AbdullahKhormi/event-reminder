@@ -9,7 +9,7 @@ const SECRET_KEY = process.env.JWT_SECRET;
 // Sign Up
 router.post("/sign-up", async (req, res) => {
   try {
-    const { userName, email, password } = req.body;
+    const { userName, email, password,roles } = req.body;
 
     const existing = await User.findOne({ email });
     if (existing) {
@@ -17,13 +17,21 @@ router.post("/sign-up", async (req, res) => {
     }
 
     const hashPass = await bcrypt.hash(password, 10);
-    const newUser = new User({ userName, email, password: hashPass });
+    const newUser = new User({ userName, email, password: hashPass ,roles});
     await newUser.save();
 
     const userData = newUser.toObject();
     delete userData.password;
 
-    const token = jwt.sign({ id: newUser._id }, SECRET_KEY, { expiresIn: "7d" });
+    const token = jwt.sign({
+      id: newUser._id,
+      userId: newUser.userId,
+      username: newUser.userName,
+      roles: newUser.roles
+    },
+    SECRET_KEY,
+    { expiresIn: "7d" }
+  );
 
     res.status(201).send({ message: "User registered", user: userData, token });
   } catch (err) {
@@ -49,12 +57,88 @@ router.post("/login", async (req, res) => {
     const userData = user.toObject();
     delete userData.password;
 
-    const token = jwt.sign({ id: user._id,username:user.userName }, SECRET_KEY, { expiresIn: "7d" });
+    const token = jwt.sign({ id: user._id,username:user.userName ,userId: user.userId,roles:user.roles}, SECRET_KEY, { expiresIn: "7d" });
 
     res.send({ message: "Login successful", user: userData, token });
   } catch (err) {
     res.status(500).send({ message: err.message });
   }
 });
+
+//fetch Users
+router.get("", async (req, res) => {
+  const first = parseInt(req.query.first) || 0;
+  const rows = parseInt(req.query.rows) || 10;
+  try {
+    const users = await User.find()
+                              .skip(first)
+                              .limit(rows)
+                             .select("-password") // نحذف كلمة السر من النتائج
+                              .exec();
+
+    const totalRecords = await User.countDocuments();
+
+    res.send({ users, totalRecords });
+  } catch (err) {
+    res.status(500).send({ error: "Something went wrong." });
+  }
+});
+
+router.delete("/:userId", async (req, res) => {
+  const userId = parseInt(req.params["userId"]);
+
+  try {
+    const user = await User.findOne({ userId });
+    if (!user) {
+      return res.status(404).send({ message: "User not found" });
+    }
+
+    await User.deleteOne({ userId });
+    res.send({ message: "User deleted successfully" });
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+});
+router.get("/:userId", async (req, res) => {
+  const userId = parseInt(req.params["userId"]);
+
+  try {
+    const user = await User.findOne({ userId }).select("-password");
+    if (!user) {
+      return res.status(404).send({ message: "User not found" });
+    }
+
+    res.send(user.toObject());
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+});
+router.put("/:userId", async (req, res) => {
+  const userId = parseInt(req.params["userId"]);
+  const updatedData = req.body;
+
+  try {
+    // إذا فيه كلمة مرور، نسوي لها hash
+    if (updatedData.password) {
+      const bcrypt = require("bcrypt");
+      updatedData.password = await bcrypt.hash(updatedData.password, 10);
+    }
+
+    const user = await User.findOneAndUpdate(
+      { userId },
+      updatedData,
+      { new: true, runValidators: true }
+    ).select("-password");
+
+    if (!user) {
+      return res.status(404).send({ message: "User not found" });
+    }
+
+    res.send({ message: "User updated successfully", user });
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+});
+
 
 module.exports = router;
