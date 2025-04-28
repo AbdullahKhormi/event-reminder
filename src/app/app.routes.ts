@@ -10,6 +10,8 @@ import { EditEventComponent } from './@views/edit-event/edit-event.component';
 import { NotFoundComponent } from './auth/not-found/not-found.component';
 import { UsersComponent } from './auth/users/users.component';
 import { EditUsersComponent } from './auth/users/edit-users/edit-users.component';
+import { VerifyEmailComponent } from './auth/verify-email/verify-email.component';
+import { ResetPasswordComponent } from './auth/reset-passwrd/reset-passwrd.component';
 
 export const routes: Routes = [
   {
@@ -19,6 +21,8 @@ export const routes: Routes = [
         },
         {path:'auth',component:LoginComponent},
         {path:'registeration',component:NewAccountComponent},
+        {path:'verify-email',component:VerifyEmailComponent},
+        {path:'reset-password/:token',component:ResetPasswordComponent},
   {
     path: '',
     component: DefaultLayoutComponent,

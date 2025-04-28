@@ -25,7 +25,8 @@ export class LoginComponent {
   receiveObj:any
     @Input() imgLogo ='../../../assets/common/logo.jpeg'
   loginForm!:FormGroup
-constructor(private fb :FormBuilder,private http :HttpClient ,private googleAnalyticsService: GoogleAnalyticsService, private route :Router,private authService:AuthService,private evS:EvntesService,private messageService:MessageService){
+constructor(private fb :FormBuilder,private http :HttpClient ,
+  private googleAnalyticsService: GoogleAnalyticsService, private route :Router,private authService:AuthService,private evS:EvntesService,private messageService:MessageService){
 this.loginForm=fb.group({
   email: ['', [Validators.required, Validators.email]],
    password:['',Validators.required]
@@ -71,7 +72,6 @@ sendForm() {  if (this.loginForm.valid) {
 
   this.authService.login(loginData.email, loginData.password).subscribe(
     (response: any) => {
-      console.log(response);
 
       localStorage.setItem('jwt', response.token);
       if (response.user) {
@@ -91,7 +91,13 @@ sendForm() {  if (this.loginForm.valid) {
       }, 1000);
 
       setTimeout(() => {
-        this.route.navigate(['home']);
+        const users = localStorage.getItem('roles')
+        if(users==='admin'){
+          this.route.navigate(['users']);
+        }else{
+          this.route.navigate(['home']);
+
+        }
       }, 3000);
     },
     (error) => {

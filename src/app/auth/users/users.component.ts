@@ -67,7 +67,6 @@ export class UsersComponent {
   }
 
   delete(id: string) {
-    console.log(id)
     if (this.isDeleting[id]) return;
     this.isDeleting[id] = true;
 

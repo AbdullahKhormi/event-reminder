@@ -67,6 +67,12 @@ export class DataMongoService {
       }
     });
   }
+  getAllUsersWithoutPag() {
+
+    return this.http.get<any>(`${this.apiUrl}/users`, {
+
+    });
+  }
 
   getUsersById(id: any) {
     const userId = this.authService.getDecodedToken()?.userId;
@@ -82,5 +88,9 @@ export class DataMongoService {
     const userId = this.authService.getDecodedToken()?.userId;
     const updatedData = { ...data, userId };
     return this.http.put<any>(`${this.apiUrl}/users/${id}`, updatedData);
+  }
+
+  verfiEmail(fPass:any){
+    return this.http.post<any>(`${this.apiUrl}/users/forgot-password`, fPass);
   }
 }

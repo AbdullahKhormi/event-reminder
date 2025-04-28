@@ -40,15 +40,29 @@
             </div>
           </div>
 
-          <!-- Buttons -->
-          <div class="gap-2 d-flex">
-            <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid">Send</button>
-            <button type="button" class="btn btn-secondary" (click)="loginForm.reset()">Reset</button>
-          </div>
 
+<!-- forgot password-->
+
+ <div class="mt-2">
+  <a [routerLink]="'/verify-email'">Forgot Password</a>
+ </div>
+
+       <!-- Buttons -->
+       <div class="gap-2 d-flex mt-3">
+        <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid">Send</button>
+        <button type="button" class="btn btn-secondary" (click)="loginForm.reset()">Reset</button>
+      </div>
           <!-- New Account Link -->
-          <div class="mb-3">
-            <a [routerLink]="'/registeration'">New account</a>
+          <div class="mt-4">
+            <div>
+<div>
+  <h6 class="text-[#6c757d]">Don't have an account</h6>
+  <div>
+    <button class="bg-slate-300 py-3 w-100 border-2 rounded-md no-underline" >  <a class=" text-xl  no-underline" [routerLink]="'/registeration'">New account</a></button>
+
+  </div>
+</div>
+            </div>
           </div>
         </div>
       </form>

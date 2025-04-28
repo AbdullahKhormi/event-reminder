@@ -2,18 +2,19 @@ import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { GoogleAnalyticsService } from '../../@core/services/google-analytics.service';
 import { filter } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { MessageService } from 'primeng/api';
 import { HeaderComponent } from '../../shared/components/header/header.component';
 import { ToastModule } from 'primeng/toast';
+import { DataMongoService } from '../../@core/services/data-mongo.service';
 
 @Component({
   selector: 'app-new-account',
   standalone: true,
-  imports: [ReactiveFormsModule,HttpClientModule,CommonModule,HeaderComponent,ToastModule],
+  imports: [ReactiveFormsModule,HttpClientModule,CommonModule,HeaderComponent,ToastModule,RouterModule],
   providers:[MessageService],
   templateUrl: './new-account.component.html',
   styleUrl: './new-account.component.scss'
@@ -22,13 +23,13 @@ export class NewAccountComponent {
   private url= environment.apiBaseUrl;
   registerForm!: FormGroup;
   show=false
-
+showRoles=false
   constructor(
     private googleAnalyticsService: GoogleAnalyticsService,
     private fb: FormBuilder,
     private http: HttpClient,
     private route: Router,
-    private messageService: MessageService
+    private messageService: MessageService,private users:DataMongoService
   ) {
     this.registerForm = fb.group({
       username: ['', Validators.required],
@@ -40,9 +41,23 @@ export class NewAccountComponent {
   }
 
   ngOnInit() {
+    this.users.getAllUsersWithoutPag().subscribe(res=>{
+      const length = res.totalRecords
+      if(length ==0){
+        this.showRoles=true
+        this.registerForm.patchValue({
+          roles:'admin'
+        })
+      }
+    })
     let roles= localStorage.getItem('roles')
     if(roles==='admin'){
 this.show=true
+this.showRoles=true
+this.registerForm.patchValue({
+  roles:'user'
+})
+
     }
     this.route.events
       .pipe(filter((event) => event instanceof NavigationEnd))
@@ -64,7 +79,6 @@ this.show=true
         loginData.roles=rolesVal
       }
 
-      console.log(this.registerForm.value)
 
       this.http.post(`${this.url}/users/sign-up`, loginData)
         .subscribe(response => {

@@ -1,0 +1,53 @@
+<div class="container-fluid d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <p-toast
+      [showTransformOptions]="'translateY(100%)'"
+      [showTransitionOptions]="'1000ms'"
+      [hideTransitionOptions]="'1000ms'">
+    </p-toast>
+
+    <div class="col-md-4">
+      <h2 class="text-center mb-4" style="color: #6c757d;">Reset Your Password</h2>
+
+      <form [formGroup]="resetPasswordForm" (ngSubmit)="resetPassword()">
+        <div class="form-holder">
+
+          <!-- New Password Field -->
+          <div class="mb-3">
+            <input
+              type="password"
+              formControlName="newPassword"
+              class="form-control"
+              placeholder="New Password"
+              required>
+            <div *ngIf="resetPasswordForm.get('newPassword')?.touched && resetPasswordForm.get('newPassword')?.invalid" class="text-danger">
+              <div *ngIf="resetPasswordForm.get('newPassword')?.hasError('required')">Password is required.</div>
+              <div *ngIf="resetPasswordForm.get('newPassword')?.hasError('minlength')">Password must be at least 6 characters.</div>
+            </div>
+          </div>
+
+          <!-- Confirm Password Field -->
+          <div class="mb-3">
+            <input
+              type="password"
+              formControlName="confirmPassword"
+              class="form-control"
+              placeholder="Confirm New Password"
+              required>
+            <div *ngIf="resetPasswordForm.get('confirmPassword')?.touched && resetPasswordForm.get('confirmPassword')?.invalid" class="text-danger">
+              <div *ngIf="resetPasswordForm.get('confirmPassword')?.hasError('required')">Confirmation is required.</div>
+              <div *ngIf="resetPasswordForm.hasError('passwordMismatch')">Passwords do not match.</div>
+            </div>
+          </div>
+
+          <!-- Buttons -->
+          <div class="gap-2 d-flex mt-3">
+            <button type="submit" class="btn btn-primary" [disabled]="resetPasswordForm.invalid">Reset Password</button>
+            <button type="button" class="btn btn-secondary" (click)="resetPasswordForm.reset()">Reset</button>
+            <button type="button" class="btn btn-danger">
+              <a [routerLink]="'/auth'" class="no-underline text-[#fff]">Cancel</a>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>

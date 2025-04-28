@@ -67,7 +67,6 @@ export class EditEventComponent implements OnInit {
 
           if (selectedItem) {
             this.event = selectedItem;
-            console.log( this.event)
 
             const formattedDate = this.formatDateForInput(this.event.eventDate);
 

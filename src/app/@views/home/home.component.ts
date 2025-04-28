@@ -50,7 +50,6 @@ export class HomeComponent  implements OnInit, OnDestroy{
 }
 getClosestEvent() {
   this.mongo.getAll(this.request).subscribe((res: any) => {
-    console.log(res);
     this.events = res.events;
     const currentDate = new Date();
 

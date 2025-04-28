@@ -1,0 +1,36 @@
+<div class="container-fluid d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <p-toast
+      [showTransformOptions]="'translateY(100%)'"
+      [showTransitionOptions]="'1000ms'"
+      [hideTransitionOptions]="'1000ms'">
+    </p-toast>
+
+    <div class="col-md-4">
+      <h2 class="text-center mb-4" style="color: #6c757d;">Verify Your Email</h2>
+
+      <form [formGroup]="verifyEmailForm" (ngSubmit)="sendVerificationEmail()">
+        <div class="form-holder">
+          <!-- Email Field -->
+          <div class="mb-3">
+            <input
+              type="email"
+              formControlName="email"
+              class="form-control"
+              placeholder="Email"
+              required>
+            <div *ngIf="verifyEmailForm.get('email')?.touched && verifyEmailForm.get('email')?.invalid" class="text-danger">
+              <div *ngIf="verifyEmailForm.get('email')?.hasError('required')">Email is required.</div>
+              <div *ngIf="verifyEmailForm.get('email')?.hasError('email')">Invalid email format.</div>
+            </div>
+          </div>
+
+          <!-- Buttons -->
+          <div class="gap-2 d-flex mt-3">
+            <button type="submit" class="btn btn-primary " [disabled]="verifyEmailForm.invalid">Send </button>
+            <button type="button" class="btn btn-secondary " (click)="verifyEmailForm.reset()">Reset</button>
+            <button type="button" class="btn btn-danger " ><a [routerLink]="'../'" class="no-underline text-[#fff]">Cancel</a></button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>

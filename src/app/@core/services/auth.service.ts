@@ -23,7 +23,6 @@ export class AuthService {
     return new Observable((observer) => {
       axios.post(`${this.apiUrl}/users/login`, loginData)
         .then((response: any) => {
-          console.log(response.data.token)
           const token = response.data.token;
           localStorage.setItem('jwt', token);
           localStorage.setItem('email', email);

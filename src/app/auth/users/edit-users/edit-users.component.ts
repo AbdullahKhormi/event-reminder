@@ -67,7 +67,6 @@ private mongo :DataMongoService,
 
               if (selectedItem) {
                 this.users = selectedItem;
-                console.log( this.users)
 
 
                 this.updateForm.patchValue({
@@ -95,7 +94,6 @@ private mongo :DataMongoService,
           loginData.roles=rolesVal
         }
 
-        console.log(this.updateForm.value)
 
         this.mongo.updateUsers(this.userId,loginData)
           .subscribe(response => {

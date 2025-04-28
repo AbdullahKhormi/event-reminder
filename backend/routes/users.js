@@ -118,7 +118,6 @@ router.put("/:userId", async (req, res) => {
   const updatedData = req.body;
 
   try {
-    // إذا فيه كلمة مرور، نسوي لها hash
     if (updatedData.password) {
       const bcrypt = require("bcrypt");
       updatedData.password = await bcrypt.hash(updatedData.password, 10);
@@ -139,6 +138,62 @@ router.put("/:userId", async (req, res) => {
     res.status(500).send({ message: err.message });
   }
 });
+const nodemailer = require("nodemailer");
 
+const transporter = nodemailer.createTransport({
+  service: "Gmail",
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
+
+// forgot-password
+router.post("/forgot-password", async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).send({ message: "User not found" });
+    }
+
+    const resetToken = jwt.sign({ id: user._id }, SECRET_KEY, { expiresIn: "1h" });
+
+    const resetUrl = `http://localhost:4200/reset-password/${resetToken}`;
+
+    await transporter.sendMail({
+      to: user.email,
+      subject: "Reset your password",
+      html: `<h2>Reset your password</h2>
+             <p>Click the link below to reset your password:</p>
+             <a href="${resetUrl}">Reset Password</a>`,
+    });
+
+    res.send({ message: "Password reset email sent" });
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+});
+
+// Reset Password
+router.post("/reset-password/:token", async (req, res) => {
+  const { token } = req.params;
+  const { newPassword } = req.body;
+
+  try {
+    const decoded = jwt.verify(token, SECRET_KEY);
+    const userId = decoded.id;
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    await User.findByIdAndUpdate(userId, { password: hashedPassword });
+
+    res.send({ message: "Password has been reset successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(400).send({ message: "Invalid or expired token" });
+  }
+});
 
 module.exports = router;
