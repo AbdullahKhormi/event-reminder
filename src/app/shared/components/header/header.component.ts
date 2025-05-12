@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
 })
 export class HeaderComponent {
   userName:any
-  menuOpen=true
+  menuOpen=false
   show=false
   showHome=false
   usersRoles:any |undefined
