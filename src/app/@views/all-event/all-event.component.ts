@@ -26,12 +26,11 @@ export class AllEventComponent implements OnInit {
   first = 0;
 
   request: any = {
-    first: 0,
-    rows: 10,
-    sortDirection: 1,
-    sortColumn: ''
-
-  };
+  first: 0,
+  rows: 10,
+  sortField: '',
+  sortOrder: -1 // -1 = desc, 1 = asc
+}
   loading: boolean = true;
   curentDate = new Date().toISOString()
   isExpiredDate=false
@@ -70,33 +69,38 @@ export class AllEventComponent implements OnInit {
 
   }
 
-  getAll() {
-    this.loading = true;
+getAll() {
+  this.loading = true;
 
-    this.mongoD.getAll(this.request).subscribe(res => {
-      this.events = res.events;
-      this.totalRecords = res.totalRecords;
+  this.mongoD.getAll(this.request).subscribe(res => {
+    this.events = res.events;
+    this.totalRecords = res.totalRecords;
+    this.first = this.request.first;
 
-      this.first = this.request.first;
-
-      const now = new Date();
-      this.events.forEach(ev => {
-        ev.isExpiredDate = new Date(ev.eventDate) < now;
-      });
-
-      this.loading = false;
+    const now = new Date();
+    this.events.forEach(ev => {
+      ev.isExpiredDate = new Date(ev.eventDate) < now;
     });
+
+    this.loading = false;
+  });
+}
+onSort(event: any) {
+  if (this.request.sortField !== event.field || this.request.sortOrder !== event.order) {
+    this.request.sortField = event.field;
+    this.request.sortOrder = event.order;
+    this.getAll();
   }
-
+}
   onPageChange(event: any) {
-    if (event.first !== this.request.first || event.rows !== this.request.rows) {
-      this.request.first = event.first;
-      this.request.rows = event.rows;
+   if (event.first !== this.request.first || event.rows !== this.request.rows) {
+    this.request.first = event.first;
+    this.request.rows = event.rows;
 
-      this.first = event.first;
+    this.first = event.first;
 
-      this.getAll();
-    }
+    this.getAll();
+  }
   }
 
 
@@ -158,7 +162,7 @@ export class AllEventComponent implements OnInit {
 
   send(event: any) {
     const email = localStorage.getItem('email');
-    const eventDate = new Date(event.dateEvent);
+    const eventDate = new Date(event.eventDate);
     const formattedDate = eventDate.toLocaleString('en-GB', {
       day: '2-digit',
       month: '2-digit',
@@ -170,20 +174,21 @@ export class AllEventComponent implements OnInit {
 
     const messageContent = `
       There is not much left for your event
-           - Event Name -: ${event.nameEvent} - Event Date -: ${formattedDate}`;
+           - Event Name -: ${event.eventName} - Event Date -: ${formattedDate}`;
 
     emailjs.init('AG9bmRQp2QgOY-_Cd');
 
-    this.sendEmail(messageContent, event.nameEvent);
+    this.sendEmail(messageContent, event.eventName);
 
-    setInterval(() => {
-      this.sendEmail(messageContent, event.nameEvent);
-    }, 30000);
+    // setInterval(() => {
+    //   this.sendEmail(messageContent, event.eventName);
+    // }, 30000);
   }
 
   sendEmail(messageContent: string, eventName: string) {
+    const email = localStorage.getItem('email')
     emailjs.send('service_mmfdc5h', 'template_5t4yvq4', {
-      email: 'akhormi.1@outlook.com',
+      email: email,
       message: messageContent,
       title: eventName,
     })

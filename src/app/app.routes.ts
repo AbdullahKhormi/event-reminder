@@ -12,6 +12,7 @@ import { UsersComponent } from './auth/users/users.component';
 import { EditUsersComponent } from './auth/users/edit-users/edit-users.component';
 import { VerifyEmailComponent } from './auth/verify-email/verify-email.component';
 import { ResetPasswordComponent } from './auth/reset-passwrd/reset-passwrd.component';
+import { VerifyOtpComponent } from './auth/verify-otp/verify-otp.component';
 
 export const routes: Routes = [
   {
@@ -22,6 +23,7 @@ export const routes: Routes = [
         {path:'auth',component:LoginComponent},
         {path:'registeration',component:NewAccountComponent},
         {path:'verify-email',component:VerifyEmailComponent},
+        {path:'otp',component:VerifyOtpComponent},
         {path:'reset-password/:token',component:ResetPasswordComponent},
   {
     path: '',

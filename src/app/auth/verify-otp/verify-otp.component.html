@@ -1,0 +1,94 @@
+<div class="container-fluid d-flex justify-content-center align-items-center" style="height: 100vh;">
+  <p-toast
+    [showTransformOptions]="'translateY(100%)'"
+    [showTransitionOptions]="'1000ms'"
+    [hideTransitionOptions]="'1000ms'">
+  </p-toast>
+
+  <div class="col-md-4">
+    <h2 class="text-center mb-4" style="color: #6c757d;">Verify OTP</h2>
+
+    <form [formGroup]="otpForm" (ngSubmit)="verifyOtp()">
+      <div class="form-holder">
+        <div class="otp-input-container mb-3 d-flex justify-content-between">
+          <input
+            type="text"
+            maxlength="1"
+            name="otp1"
+            formControlName="otp1"
+            class="form-control otp-input"
+            (input)="onInput($event, 1)"
+            (keydown)="onKeyDown($event, 1)"
+            required
+              #otp1
+  inputmode="numeric"
+
+            autofocus
+          >
+          <input
+            type="text"
+            maxlength="1"
+            name="otp2"
+            formControlName="otp2"
+            class="form-control otp-input"
+            (input)="onInput($event, 2)"
+            (keydown)="onKeyDown($event, 2)"
+            required
+          >
+          <input
+            type="text"
+            maxlength="1"
+            name="otp3"
+            formControlName="otp3"
+            class="form-control otp-input"
+            (input)="onInput($event, 3)"
+            (keydown)="onKeyDown($event, 3)"
+            required
+          >
+          <input
+            type="text"
+            maxlength="1"
+            name="otp4"
+            formControlName="otp4"
+            class="form-control otp-input"
+            (input)="onInput($event, 4)"
+            (keydown)="onKeyDown($event, 4)"
+            required
+          >
+          <input
+            type="text"
+            maxlength="1"
+            name="otp5"
+            formControlName="otp5"
+            class="form-control otp-input"
+            (input)="onInput($event, 5)"
+            (keydown)="onKeyDown($event, 5)"
+            required
+          >
+          <input
+            type="text"
+            maxlength="1"
+            name="otp6"
+            formControlName="otp6"
+            class="form-control otp-input"
+            (input)="onInput($event, 6)"
+            (keydown)="onKeyDown($event, 6)"
+            required
+          >
+        </div>
+
+        <div *ngIf="otpForm.invalid && otpForm.touched" class="text-danger">
+          <div *ngIf="otpForm.hasError('required')">All fields are required.</div>
+        </div>
+
+        <div class="gap-2 d-flex mt-3">
+          <button type="submit" class="btn btn-primary" [disabled]="otpForm.invalid">Verify OTP</button>
+          <button type="button" class="btn btn-secondary" (click)="otpForm.reset()">Reset</button>
+          <button type="button" class="btn btn-danger">
+            <a (click)="back()" class="no-underline text-[#fff]">Cancel</a>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

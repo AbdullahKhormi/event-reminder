@@ -6,6 +6,8 @@ router.get("", async (req, res) => {
   const first = parseInt(req.query.first) || 0;
   const rows = parseInt(req.query.rows) || 10;
   const userId = parseInt(req.query.userId);
+  const sortField = req.query.sortField || 'eventName';
+  const sortOrder = parseInt(req.query.sortOrder) || -1;
 
   if (!userId) {
     return res.status(400).send({ error: "userId is required" });
@@ -13,6 +15,7 @@ router.get("", async (req, res) => {
 
   try {
     const events = await Event.find({ userId })
+                              .sort({ [sortField]: sortOrder })
                               .skip(first)
                               .limit(rows)
                               .exec();

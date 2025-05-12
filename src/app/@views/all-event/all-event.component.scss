@@ -1,4 +1,11 @@
 ::ng-deep{
+  .p-datatable .p-sortable-column.p-highlight {
+     background: #fff;
+   color: #000;
+}
+.p-datatable .p-sortable-column.p-highlight .p-sortable-column-icon {
+    color: #000;
+}
     .p-paginator {
         display: flex
     ;

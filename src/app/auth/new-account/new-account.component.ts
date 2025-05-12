@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -29,7 +29,7 @@ showRoles=false
     private fb: FormBuilder,
     private http: HttpClient,
     private route: Router,
-    private messageService: MessageService,private users:DataMongoService
+    private messageService: MessageService,private users:DataMongoService,private location : Location
   ) {
     this.registerForm = fb.group({
       username: ['', Validators.required],
@@ -107,5 +107,8 @@ this.registerForm.patchValue({
           });
         });
     }
+  }
+  back(){
+    this.location.back()
   }
 }

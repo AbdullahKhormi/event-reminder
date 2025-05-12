@@ -2,12 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { AuthService } from './auth.service';
+import { BehaviorSubject } from 'rxjs';
 
 interface Pagination {
   first: number;
   rows: number;
-  sortColumn: string;
-  sortDirection: number;
+  sortField?: string;
+  sortOrder?: 'asc' | 'desc';
 }
 
 @Injectable({
@@ -18,17 +19,20 @@ export class DataMongoService {
 
   private apiUrl = environment.apiBaseUrl;
 
-  getAll(request: Pagination) {
-    const { first, rows } = request;
-    const userId = this.authService.getDecodedToken()?.userId;
-    return this.http.get<any>(`${this.apiUrl}/event`, {
-      params: {
-        first: first.toString(),
-        rows: rows.toString(),
-        userId: userId?.toString()
-      }
-    });
-  }
+ getAll(request: Pagination) {
+  const { first, rows, sortField = 'eventDate', sortOrder = 'desc' } = request;
+  const userId = this.authService.getDecodedToken()?.userId;
+
+  return this.http.get<any>(`${this.apiUrl}/event`, {
+    params: {
+      first: first.toString(),
+      rows: rows.toString(),
+      userId: userId?.toString(),
+      sortField,
+      sortOrder
+    }
+  });
+}
 
   getById(id: any) {
     const userId = this.authService.getDecodedToken()?.userId;
@@ -92,5 +96,14 @@ export class DataMongoService {
 
   verfiEmail(fPass:any){
     return this.http.post<any>(`${this.apiUrl}/users/forgot-password`, fPass);
+  }
+  verifyOtp(email: any, otp: string) {
+    return this.http.post<any>(`${this.apiUrl}/users/verify-otp`, { email, otp });
+  }
+  private sendEmail = new BehaviorSubject('');
+
+  receiveEm = this.sendEmail.asObservable();
+  receive(data: any) {
+    this.sendEmail.next(data);
   }
 }
