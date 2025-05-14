@@ -24,12 +24,14 @@ export class AllEventComponent implements OnInit {
   totalRecords: number = 0;
   rows = 10;
   first = 0;
-
+  title: string = '';
+  isPointer: boolean = false;
   request: any = {
   first: 0,
   rows: 10,
   sortField: '',
-  sortOrder: -1 // -1 = desc, 1 = asc
+  sortOrder: -1 ,
+  search:''
 }
   loading: boolean = true;
   curentDate = new Date().toISOString()
@@ -45,7 +47,6 @@ export class AllEventComponent implements OnInit {
     this.getAll()
   }
   ev: any
-
   loadEvents() { //strapi
 // //     this.loading = true;
 // //     const page = Math.floor(this.first / this.rows) + 1;
@@ -68,7 +69,22 @@ export class AllEventComponent implements OnInit {
 //     });
 
   }
+search() {
+  this.request.search = this.title;
+       this.request.search =  this.request.search?.trimStart();
+    this.request.search =  this.request.search?.trimEnd();
+  this.getAll();
+}
+onInputChange(){
+    this.isPointer = !!(this.title && this.title.trim().length > 0);
 
+}
+searchEmpty(){
+  this.request.search = this.title
+  if(this.title.length==0){
+    this.getAll()
+  }
+}
 getAll() {
   this.loading = true;
 

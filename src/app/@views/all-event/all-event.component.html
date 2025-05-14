@@ -13,6 +13,27 @@
   </div>
       <div class="col" *ngIf="!loading">
         <h6>total={{ totalRecords }}</h6>
+        <div class="py-4  lg:columns-3 xl:columns-3 md:columns-2 sm:columns-4
+
+">
+
+
+
+<div class="relative">
+<input type="search" class="form-control" [(ngModel)]="title"  (keyup.enter)="search()"
+                  (input)="onInputChange()" placeholder="Search by event name" (ngModelChange)="searchEmpty()">
+
+<div class="absolute top-2 right-2 "
+[ngStyle]="{
+      'cursor':isPointer ? 'pointer' : 'default'
+
+    }"(click)="search()">
+<i class="pi pi-search
+" ></i>
+</div>
+        </div>
+</div>
+
  <p-table
   [value]="events"
   [sortField]="request.sortField"
@@ -61,7 +82,7 @@
   <ng-template pTemplate="emptymessage">
     <tr>
       <td colspan="3" class="text-center" *ngIf="events.length === 0">
-        <h1>No Found Events</h1>
+        <h3>No Found Events</h3>
       </td>
     </tr>
   </ng-template>

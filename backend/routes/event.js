@@ -2,25 +2,33 @@ const express = require("express");
 const router = express.Router();
 const Event = require("./../db/events");
 const { deleteEvent, updateEvent ,getEvents } = require("./../handler/events-handler");
+//get method
 router.get("", async (req, res) => {
   const first = parseInt(req.query.first) || 0;
   const rows = parseInt(req.query.rows) || 10;
   const userId = parseInt(req.query.userId);
   const sortField = req.query.sortField || 'eventName';
   const sortOrder = parseInt(req.query.sortOrder) || -1;
+  const search = req.query.search || '';
 
   if (!userId) {
     return res.status(400).send({ error: "userId is required" });
   }
 
   try {
-    const events = await Event.find({ userId })
+    const filter = { userId };
+
+    if (search.trim().length > 0) {
+      filter.eventName = { $regex: search, $options: 'i' };
+    }
+
+    const events = await Event.find(filter)
                               .sort({ [sortField]: sortOrder })
                               .skip(first)
                               .limit(rows)
                               .exec();
 
-    const totalRecords = await Event.countDocuments({ userId });
+    const totalRecords = await Event.countDocuments(filter);
 
     res.send({ events, totalRecords });
   } catch (err) {
@@ -28,6 +36,7 @@ router.get("", async (req, res) => {
   }
 });
 
+//post method
 router.post("", async (req, res) => {
   let eventData = req.body;
 
@@ -44,7 +53,7 @@ router.post("", async (req, res) => {
   await ev.save();
   res.send(ev.toObject());
 });
-
+//delete method
 router.delete("/:id", async (req, res) => {
   const id = req.params["id"];
   const userId = parseInt(req.query.userId);
@@ -58,6 +67,7 @@ router.delete("/:id", async (req, res) => {
   await Event.deleteOne({ _id: id });
   res.send({ message: "Deleted" });
 });
+//get method by id
 router.get("/:id", async (req, res) => {
   const id = req.params["id"];
   const event = await Event.findById(id);

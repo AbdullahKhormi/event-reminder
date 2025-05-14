@@ -9,6 +9,7 @@ interface Pagination {
   rows: number;
   sortField?: string;
   sortOrder?: 'asc' | 'desc';
+  search:string
 }
 
 @Injectable({
@@ -20,18 +21,31 @@ export class DataMongoService {
   private apiUrl = environment.apiBaseUrl;
 
  getAll(request: Pagination) {
-  const { first, rows, sortField = 'eventDate', sortOrder = 'desc' } = request;
+  const { first, rows, sortField = 'eventDate', sortOrder = 'desc' ,search } = request;
   const userId = this.authService.getDecodedToken()?.userId;
 
-  return this.http.get<any>(`${this.apiUrl}/event`, {
+ if(search){
+   return this.http.get<any>(`${this.apiUrl}/event`, {
     params: {
       first: first.toString(),
       rows: rows.toString(),
       userId: userId?.toString(),
       sortField,
-      sortOrder
+      sortOrder,
+      search:search?.toString()
     }
   });
+ }else{
+   return this.http.get<any>(`${this.apiUrl}/event`, {
+params: {
+      first: first.toString(),
+      rows: rows.toString(),
+      userId: userId?.toString(),
+      sortField,
+      sortOrder,
+    }
+  });
+ }
 }
 
   getById(id: any) {

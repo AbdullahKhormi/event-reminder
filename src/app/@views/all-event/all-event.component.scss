@@ -61,7 +61,10 @@
     .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
       @apply bg-gray-300 text-black  border-gray-400 font-semibold ;
     }
+
   }
 
-
+input[type="search"]::-webkit-search-cancel-button {
+  display: none;
+}
 
