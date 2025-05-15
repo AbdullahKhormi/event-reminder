@@ -105,7 +105,7 @@ router.post("/forgot-password", async (req, res) => {
 
     // Generate OTP and expiration time
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    const otpExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+    const otpExpires = new Date(Date.now() + 3 * 60 * 1000); // 3 minutes
 
     // Save OTP and expiration time to user
     user.otp = otp;
@@ -114,11 +114,24 @@ router.post("/forgot-password", async (req, res) => {
     await user.save();
 
     // Send OTP via email
-    await transporter.sendMail({
-      to: user.email,
-      subject: "Password Reset OTP",
-      html: `<p>Your OTP is: <b>${otp}</b></p><p>This code will expire in 10 minutes.</p>`,
-    });
+   await transporter.sendMail({
+  to: user.email,
+  subject: "Your Password Reset OTP",
+  html: `
+    <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 500px; margin: auto; border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9;">
+      <h2 style="color: #333;">Password Reset Request</h2>
+      <p style="font-size: 16px; color: #555;">
+        You requested to reset your password. Use the OTP below to proceed:
+      </p>
+      <div style="font-size: 28px; font-weight: bold; text-align: center; color: #333; background-color: #e0f7fa; border: 2px dashed #26a69a; padding: 16px; border-radius: 6px; margin: 20px 0;">
+        ${otp}
+      </div>
+      <p style="font-size: 14px; color: #888;">
+        This code is valid for 3 minutes. If you did not request a password reset, please ignore this email.
+      </p>
+    </div>
+  `,
+});
 
     res.send({ message: "OTP sent successfully" });
   } catch (err) {
@@ -140,7 +153,7 @@ router.post("/verify-otp", async (req, res) => {
     user.otpVerified = true;
     user.otp = undefined;
     user.otpExpires = undefined;
-    await user.save(); // تأكد أنه لا يوجد خطأ هنا
+    await user.save();
 
     res.send({ message: "OTP verified successfully" });
   } catch (err) {
@@ -155,7 +168,7 @@ router.post("/reset-password", async (req, res) => {
   try {
     const user = await User.findOne({ email });
 
-    console.log("otpVerified:", user?.otpVerified); // 👈 تتبع الحالة هنا
+    console.log("otpVerified:", user?.otpVerified);
 
     if (!user || !user.otpVerified) {
       return res.status(400).send({ message: "OTP not verified" });
