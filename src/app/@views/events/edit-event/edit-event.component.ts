@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { EvntesService } from '../../@core/services/evntes.service';
+import { EvntesService } from '../../../@core/services/evntes.service';
 import { CommonModule } from '@angular/common';
 import { ToastModule } from 'primeng/toast';
 import { CalendarModule } from 'primeng/calendar';
-import { GoogleAnalyticsService } from '../../@core/services/google-analytics.service';
+import { GoogleAnalyticsService } from '../../../@core/services/google-analytics.service';
 import { filter } from 'rxjs';
-import { DataMongoService } from '../../@core/services/data-mongo.service';
+import { DataMongoService } from '../../../@core/services/data-mongo.service';
 
 @Component({
   selector: 'app-edit-event',

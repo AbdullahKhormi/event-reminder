@@ -2,14 +2,14 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
-import { EvntesService } from '../../@core/services/evntes.service';
+import { EvntesService } from '../../../@core/services/evntes.service';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // <-- Import this
 import { NavigationEnd, Router } from '@angular/router';
-import { GoogleAnalyticsService } from '../../@core/services/google-analytics.service';
+import { GoogleAnalyticsService } from '../../../@core/services/google-analytics.service';
 import { filter } from 'rxjs';
-import { DataMongoService } from '../../@core/services/data-mongo.service';
+import { DataMongoService } from '../../../@core/services/data-mongo.service';
 
 @Component({
   selector: 'app-create-event',

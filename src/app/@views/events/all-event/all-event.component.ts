@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
-import { EvntesService } from '../../@core/services/evntes.service';
+import { EvntesService } from '../../../@core/services/evntes.service';
 import { CommonModule, DatePipe } from '@angular/common';
 import { PaginatorModule } from 'primeng/paginator';
 import { MessageService } from 'primeng/api';
@@ -8,9 +8,9 @@ import { ToastModule } from 'primeng/toast';
 import { HttpClient } from '@angular/common/http';
 import emailjs, { type EmailJSResponseStatus } from '@emailjs/browser';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
-import { GoogleAnalyticsService } from '../../@core/services/google-analytics.service';
+import { GoogleAnalyticsService } from '../../../@core/services/google-analytics.service';
 import { filter } from 'rxjs';
-import { DataMongoService } from '../../@core/services/data-mongo.service';
+import { DataMongoService } from '../../../@core/services/data-mongo.service';
 @Component({
   selector: 'app-all-event',
   standalone: true,
