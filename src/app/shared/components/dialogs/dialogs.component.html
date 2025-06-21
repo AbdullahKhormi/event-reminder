@@ -1,0 +1,23 @@
+<div *ngIf="view === 'timeout'">
+<div class="confirm-container">
+
+    <div>
+      <h1 mat-dialog-title class="text-center title">{{ text }}</h1>
+    </div>
+    <div mat-dialog-content class="text-center message">{{ message }}</div>
+
+    <div mat-dialog-actions [align]="'end'">
+      <button
+        mat-raised-button
+        color="primary"
+        [mat-dialog-close]="true"
+        class="save"
+      >
+        {{ confirmButtonText }}
+      </button>
+      <button mat-raised-button [mat-dialog-close]="false" class="cancel">
+        {{ cancelButtonText }}
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,18 @@
+::ng-deep{
+    .mat-mdc-dialog-actions.mat-mdc-dialog-actions-align-end {
+gap: 10px;
+    }
+}
+button{
+
+
+}
+.save{
+ padding: 12px;
+    background-color: gainsboro;
+}
+.cancel{
+ padding: 12px;
+    background-color:darkred;
+    color: #fff;
+}

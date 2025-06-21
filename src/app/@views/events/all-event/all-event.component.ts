@@ -75,10 +75,7 @@ search() {
     this.request.search =  this.request.search?.trimEnd();
   this.getAll();
 }
-onInputChange(){
-    this.isPointer = !!(this.title && this.title.trim().length > 0);
 
-}
 searchEmpty(){
   this.request.search = this.title
   if(this.title.length==0){
