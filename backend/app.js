@@ -1,46 +1,44 @@
-//import libraries
-
-const express = require('express');
-const mongoose = require('mongoose');
+const express = require("express");
+const mongoose = require("mongoose");
 const cors = require("cors");
-require('dotenv').config();
+require("dotenv").config();
 
-// create app and select port
 const app = express();
 const port = process.env.PORT || 3000;
 
-//import routes used in app
+// Routes
 const eventRouter = require("./routes/event");
 const usersRouter = require("./routes/users");
 
-//Middleware
+// Middleware
 app.use(cors());
 app.use(express.json());
 
-// test or check on server running or no
+// Test route
 app.get("/", (req, res) => {
-    res.send("Server Running");
+  res.send("Server Running");
 });
 
-//connection to DB
-await mongoose.connect(process.env.MONGODB_URI, {
-  dbName: "api-events",
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+// Connect to MongoDB
+async function connectDB() {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI, {
+      dbName: "api-events",
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log(" Connected to MongoDB Atlas");
+  } catch (err) {
+    console.error(" MongoDB connection error:", err.message);
+  }
+}
+connectDB();
 
-
-//active routes
+// Use routes
 app.use("/event", eventRouter);
 app.use("/users", usersRouter);
 
-//function connectDB and catch error
-connectDb().catch((err) => {
-    console.error(err);
-});
-
-//running server
+// Start server
 app.listen(port, () => {
-    console.log('Server running on port', port);
+  console.log(" Server running on port", port);
 });
-
