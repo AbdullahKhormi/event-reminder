@@ -23,11 +23,12 @@ app.get("/", (req, res) => {
 });
 
 //connection to DB
-async function connectDb() {
-    await mongoose.connect(process.env.MONGODB_URI, {
-        dbName: "api-events"
-    });
-}
+await mongoose.connect(process.env.MONGODB_URI, {
+  dbName: "api-events",
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
 
 //active routes
 app.use("/event", eventRouter);
@@ -42,3 +43,4 @@ connectDb().catch((err) => {
 app.listen(port, () => {
     console.log('Server running on port', port);
 });
+
